@@ -1,0 +1,30 @@
+﻿@model Appointment
+
+@{
+    ViewData["Title"] = "Delete Appointment";
+}
+
+<h1>Delete Appointment</h1>
+
+<h4>Appointment</h4>
+<hr />
+<div>
+    <div>
+        <h5>Appointment ID: @Model.AppointmentID</h5>
+        @* <p>Patient ID: @Model.PatientID</p>
+        <p>Doctor ID: @Model.DoctorID</p> *@
+        <p>Appointment Date: @Model.AppointmentDate.ToShortDateString()</p>
+        <p>Appointment Time: @Model.AppointmentTime</p>
+        <p>Reason: @Model.Reason</p>
+    </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="AppointmentID" />
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
