@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using HospitalManagementSystem.Models;
-using HospitalManagementSystem.Core.Entities;
+﻿using HospitalManagementSystem.Core.Entities;
 using HospitalManagementSystem.DataAccess;
 using HospitalManagementSystem.DataAccess.Persistence;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystem.Controllers
 {
@@ -67,9 +65,8 @@ namespace HospitalManagementSystem.Controllers
         // POST: NurseController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Nurse obj)
+        public async Task<ActionResult> Edit(Nurse obj)
         {
-
             if (ModelState.IsValid)
             {
                 //obj.UpdatedAt = DateTime.Now;
@@ -88,7 +85,6 @@ namespace HospitalManagementSystem.Controllers
             {
                 return NotFound();
             }
-
             return View(nurse);
         }
 
@@ -102,6 +98,5 @@ namespace HospitalManagementSystem.Controllers
             _context.Complete();
             return RedirectToAction("Index");
         }
-
     }
 }
