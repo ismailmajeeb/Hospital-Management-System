@@ -1,4 +1,4 @@
-﻿using HospitalManagementSystem.Core.Entities;
+using HospitalManagementSystem.Core.Entities;
 using HospitalManagementSystem.DataAccess.Persistence;
 using HospitalManagementSystem.DataAccess.Repositories.IRepositories;
 using System;
@@ -9,14 +9,12 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.DataAccess.Repositories
 {
-
-    public class PatientRepository: GenericRepository<Patient>,IPatientRepository
+    public class AppointmentRepository : GenericRepository<Appointment>, IAppointmentRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public PatientRepository(ApplicationDbContext context) : base(context)
+        public AppointmentRepository(ApplicationDbContext context) : base(context)
         {
         }
     }
-
 }

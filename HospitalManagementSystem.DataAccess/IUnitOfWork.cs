@@ -13,6 +13,7 @@ namespace HospitalManagementSystem.DataAccess
         INurseRepository Nurses { get; }
         IDoctorRepository Doctors { get; }
         IPatientRepository Patients { get; }
+        IAppointmentRepository Appointments { get; }
 
         int Complete();
     }

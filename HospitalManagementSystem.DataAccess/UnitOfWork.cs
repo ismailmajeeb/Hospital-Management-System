@@ -17,6 +17,7 @@ namespace HospitalManagementSystem.DataAccess
         public IPatientRepository Patients{ get; private set; }
         public IDoctorRepository Doctors{ get; private set; }
         public INurseRepository Nurses{ get; private set; }
+        public IAppointmentRepository Appointments { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -25,6 +26,7 @@ namespace HospitalManagementSystem.DataAccess
             Patients = new PatientRepository(_context);
             Doctors = new DoctorRepository(_context);
             Nurses = new NurseRepository(_context);
+            Appointments = new AppointmentRepository(_context);
         }
 
         public int Complete()

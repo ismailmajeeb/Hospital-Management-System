@@ -21,4 +21,8 @@
     <ProjectReference Include="..\HospitalManagementSystem.Core\HospitalManagementSystem.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Configrautions\" />
+  </ItemGroup>
+
 </Project>

@@ -8,5 +8,8 @@ namespace HospitalManagementSystem.Core.Entities
 {
     public class Patient
     {
+        int id;
+        public List<Appointment> Appointments;
+
     }
 }

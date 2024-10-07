@@ -15,7 +15,9 @@ namespace HospitalManagementSystem.DataAccess.Persistence
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Patient> Patients { get; set; }
-
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Appointment> Doctors { get; set; }
+        
         public ApplicationDbContext()
         {
             
@@ -23,9 +25,10 @@ namespace HospitalManagementSystem.DataAccess.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(DoctorConfiguration).Assembly);
 
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new NurseConfiguration());
+            builder.ApplyConfiguration(new AppointmentConfiguration());
         }
     }
 

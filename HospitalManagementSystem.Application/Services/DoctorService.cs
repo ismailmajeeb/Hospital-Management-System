@@ -15,5 +15,6 @@ namespace HospitalManagementSystem.Application.Services
         {
             unitOfWork = _unitOfWork;
         }
+
     }
 }

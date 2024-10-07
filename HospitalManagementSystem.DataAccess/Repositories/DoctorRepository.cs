@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.DataAccess.Repositories
 {
-    public class DoctorRepository : GenericRepository<Doctor>,IDoctorRepository
+    public class DoctorRepository: GenericRepository<Doctor>,IDoctorRepository
     {
         private readonly ApplicationDbContext _context;
 
