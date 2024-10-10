@@ -1,0 +1,28 @@
+﻿@model CreateUserModel
+@{
+    ViewData["Title"] = "Create Patient";
+    Layout = "_Create";
+}
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            @await Html.PartialAsync("_Create", Model)
+        </div>
+    </div>
+</div>
+
+
+@section AddItems {
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label"></label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+            <input asp-for="UserName" class="form-control" placeholder="Choose a username" />
+        </div>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+}
+

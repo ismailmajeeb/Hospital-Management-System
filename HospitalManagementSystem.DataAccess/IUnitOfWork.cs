@@ -15,6 +15,6 @@ namespace HospitalManagementSystem.DataAccess
         IPatientRepository Patients { get; }
         IAppointmentRepository Appointments { get; }
 
-        int Complete();
+        Task<int> CompleteAsync();
     }
 }

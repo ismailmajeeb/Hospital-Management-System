@@ -2,7 +2,6 @@
 using HospitalManagementSystem.Application.Models.User;
 using HospitalManagementSystem.Application.Models;
 using HospitalManagementSystem.Application.Services.IServices;
-using HospitalManagementSystem.DataAccess.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -10,6 +9,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using System.Text.Encodings.Web;
 using HospitalManagementSystem.Application.Models.Account;
+using HospitalManagementSystem.Core.Entities;
+using HospitalManagementSystem.DataAccess;
 
 
 namespace HospitalManagementSystem.Application.Services
@@ -19,6 +20,7 @@ namespace HospitalManagementSystem.Application.Services
 
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IConfiguration config;
         private readonly IEmailSender emailSender;
         private readonly LinkGenerator linkGenerator;
@@ -28,6 +30,7 @@ namespace HospitalManagementSystem.Application.Services
 
         public AccountService(UserManager<ApplicationUser> userManager,
                            SignInManager<ApplicationUser> signInManager,
+                           IUnitOfWork unitOfWork,
                            IConfiguration config,
                            IEmailSender emailSender,
                            LinkGenerator linkGenerator,
@@ -37,6 +40,7 @@ namespace HospitalManagementSystem.Application.Services
             this.config = config;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.unitOfWork = unitOfWork;
             this.emailSender = emailSender;
             this.linkGenerator = linkGenerator;
             this.httpContextAccessor = httpContextAccessor;
@@ -49,6 +53,7 @@ namespace HospitalManagementSystem.Application.Services
 
             ApplicationUser newUser = new()
             {
+                DateOfbirth = model.DateOfbirth,
                 UserName = model.UserName,
                 Email = model.Email,
                 PasswordHash = model.Password
@@ -58,29 +63,39 @@ namespace HospitalManagementSystem.Application.Services
             if (!result.Succeeded)
                 return Result.Failure<RegisterResponseModel, DomainError>(new DomainError(result.Errors.Select(e => e.Description)));
 
-            await signInManager.SignInAsync(newUser, isPersistent: false);
+            await userManager.AddToRoleAsync(newUser, SD.Patient);
+            await unitOfWork.Patients.AddAsync(new Patient
+            {
+                User = newUser,
+                Gender = Gender.Male,
+                Name = model.FirstName + " " + model.LastName,
 
+            });
             var ConfirmEmailToken = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
 
             var callBackUrl = GetLink("ConfirmPassword", new { Email = newUser.Email, token = ConfirmEmailToken });
             await emailSender.SendEmailAsync(newUser.Email, "Confirm Your Email",
-                                            $"To Confirm your Email <a href = {callBackUrl}>here</a>");
+                                           $"To Confirm your Email <a href = {callBackUrl}>here</a>");
 
+            await unitOfWork.CompleteAsync();
+            await signInManager.SignInAsync(newUser, isPersistent: true);
             return new RegisterResponseModel
             {
                 UserName = model.UserName,
-                Email = model.Email
+                Email = model.Email,
             };
         }
 
         public async Task<Result<LoginResponseModel, DomainError>> LoginAsync(LoginModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
-            if (user is null || !await userManager.CheckPasswordAsync(user, model.Password))
-                return Result.Failure<LoginResponseModel, DomainError>(new DomainError("Invalid Password or User name"));
+            if (user is null)
+                return Result.Failure<LoginResponseModel, DomainError>(new DomainError("Invalid Password or Email"));
 
             var result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe,
-                                                                  lockoutOnFailure: true);
+                                                                 lockoutOnFailure: true);
+            if (!result.Succeeded)
+                return Result.Failure<LoginResponseModel, DomainError>(new DomainError("Invalid Password or Email"));
 
 
 

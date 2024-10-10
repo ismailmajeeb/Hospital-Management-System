@@ -1,0 +1,74 @@
+﻿@model Patient
+
+<style>
+    .card-icon {
+        font-size: 3rem;
+        color: #007bff;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+</style>
+<div class="container mt-5">
+    <h1 class="text-center">Welcome, @Model.PatientName!</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <i class="fas fa-user-injured card-icon mb-3"></i>
+                    <h5 class="card-title">Patient Data</h5>
+                    <p class="card-text">View your personal information.</p>
+                    <a href="/Patient/Profile" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <i class="fas fa-file-medical card-icon mb-3"></i>
+                    <h5 class="card-title">Medical Records</h5>
+                    <p class="card-text">Access your medical history and records.</p>
+                    <a href="/Patient/Records" class="btn btn-primary">View Records</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt card-icon mb-3"></i>
+                    <h5 class="card-title">Next Appointment</h5>
+                    <p class="card-text">Your next appointment is on <strong>@Model.NextAppointmentDate.ToString("MMMM dd, yyyy")</strong>.</p>
+                    <a href="/Patient/Appointments" class="btn btn-primary">View Appointments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Recent Medical History</h5>
+                    <ul class="list-group">
+                        @foreach (var record in Model.MedicalHistory)
+                        {
+                            <li class="list-group-item">
+                                <strong>@record.Date.ToString("MMMM dd, yyyy")</strong> - @record.Description
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/bootstrap.bundle.min.js"></script>

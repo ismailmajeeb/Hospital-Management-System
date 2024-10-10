@@ -28,10 +28,10 @@ namespace HospitalManagementSystem.DataAccess
             Nurses = new NurseRepository(_context);
             Appointments = new AppointmentRepository(_context);
         }
-
-        public int Complete()
+        
+        public async Task<int> CompleteAsync()
         {
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
 
         public void Dispose()

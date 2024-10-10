@@ -1,5 +1,4 @@
-﻿@using HospitalManagementSystem.Core.Entities
-@model Appointment
+﻿@model Appointment
 
 @{
     ViewData["Title"] = "Edit Appointment";
@@ -12,27 +11,23 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <input type="hidden" asp-for="AppointmentID" />
+            <input type="hidden" asp-for="Id" />
              <div class="form-group">
-            <label asp-for="PatientID" class="control-label"></label>
-            <input asp-for="PatientID" class="form-control" />
-            <span asp-validation-for="PatientID" class="text-danger"></span>
+            <label asp-for="PatientId" class="control-label"></label>
+            <input asp-for="PatientId" class="form-control" />
+            <span asp-validation-for="PatientId" class="text-danger"></span>
             </div>
             <div class="form-group">
-            <label asp-for="DoctorID" class="control-label"></label>
-            <input asp-for="DoctorID" class="form-control" />
-            <span asp-validation-for="DoctorID" class="text-danger"></span>
+            <label asp-for="DoctorId" class="control-label"></label>
+            <input asp-for="DoctorId" class="form-control" />
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div> 
             <div class="form-group">
-                <label asp-for="AppointmentDate" class="control-label"></label>
-                <input asp-for="AppointmentDate" class="form-control" />
-                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AppointmentTime" class="control-label"></label>
-                <input asp-for="AppointmentTime" class="form-control" />
-                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="Reason" class="control-label"></label>
                 <textarea asp-for="Reason" class="form-control"></textarea>

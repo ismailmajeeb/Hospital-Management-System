@@ -1,10 +1,4 @@
-﻿using HospitalManagementSystem.Application.Models.Account;
-using HospitalManagementSystem.Application.Models.User;
-using HospitalManagementSystem.Application.Services.IServices;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 
 namespace HospitalManagementSystem.Controllers
 {

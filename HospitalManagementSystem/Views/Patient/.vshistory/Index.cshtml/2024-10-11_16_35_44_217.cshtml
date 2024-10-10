@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PatientsIndexModel>
+
+@{
+    ViewData["Title"] = "Patients List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Patients List</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Doctor Name</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@patient.Name</td>
+                            <td>@patient.DoctorName</td>
+                            <td class="text-center">
+                            <form asp-controller="Patient">
+
+                                <!-- Button to view medical records -->
+                                    <input type ="submit" asp-action="ViewMedicalRecords" asp-route-id="@patient.Id" class="btn btn-primary btn-sm" value="Medical Records">
+                                <!-- Button to view appointments -->
+                                    <input type="submit asp-action=" ViewAppointments" asp-route-id="@patient.Id" class="btn btn-info btn-sm" value="Appointments">
+                                <!-- Button to view patient profile -->
+                                    <input type="submit" asp-action="Delete" asp-route-id="@patient.Id" class="btn btn-success btn-sm" value="Profile">
+
+                                <!-- Button to Delete patient -->
+                                    <input type="submit" asp-action="Delete" asp-route-id="@patient.Id" class="btn btn-danger btn-sm" value="Delete">
+                                    
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+}
