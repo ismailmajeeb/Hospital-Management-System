@@ -1,19 +1,8 @@
-using HospitalManagementSystem.Application.Services;
-using HospitalManagementSystem.Application.Services.IServices;
-using HospitalManagementSystem.DataAccess;
-using HospitalManagementSystem.DataAccess.Identity;
-using HospitalManagementSystem.DataAccess.Persistence;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.CodeAnalysis.Options;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
 namespace HospitalManagementSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +34,8 @@ namespace HospitalManagementSystem
 
             var app = builder.Build();
 
+            using var scope = app.Services.CreateScope();
+            await DataBaseSeed.SeedDatabaseAsync(scope.ServiceProvider);
 
 
             // Configure the HTTP request pipeline.

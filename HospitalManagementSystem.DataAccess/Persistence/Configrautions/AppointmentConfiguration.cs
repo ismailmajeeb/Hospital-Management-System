@@ -9,22 +9,21 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
     {
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
-            builder.HasKey(a => a.AppointmentID);
-            builder.Property(a => a.AppointmentID).ValueGeneratedOnAdd();
+            builder.HasKey(a => a.Id);
+            builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
             builder.Property(a => a.PatientID).IsRequired();
             builder.Property(a => a.DoctorID).IsRequired();
-            builder.Property(a => a.AppointmentDate).IsRequired();
-            builder.Property(a => a.AppointmentTime).IsRequired();
+            builder.Property(a => a.DateTime).IsRequired();
             builder.Property(a => a.Reason).HasMaxLength(500);
 
             builder.HasOne(a => a.Patient)
                    .WithMany(p => p.Appointments)
-                   .HasForeignKey(a => a.PatientID);
+                   .HasForeignKey(a => a.PatientID).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(a => a.Doctor)
                    .WithMany(d => d.Appointments)
-                   .HasForeignKey(a => a.DoctorID);
+                   .HasForeignKey(a => a.DoctorID).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

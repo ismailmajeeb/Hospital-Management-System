@@ -1,0 +1,64 @@
+﻿@model Patient
+
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>Patient Dashboard</h1>
+        <p>Welcome, @Model.Name</p>
+    </div>
+
+    <!-- Patient Info Card -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Patient Information</h5>
+                    <p><strong>Name:</strong> @Model.Name</p>
+                    <p><strong>Age:</strong> @Model.Age</p>
+                    <p><strong>Gender:</strong> @Model.Gender</p>
+                    <p><strong>Blood Group:</strong> @Model.BloodGroup</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Overview Card -->
+        <div class="col-md-8">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Health Overview</h5>
+                    <p><strong>Upcoming Appointment:</strong></p>
+                    <ul>
+                        @foreach (var appointment in Model.Appointments)
+                        {
+                            <li>@appointment.AppointmentDateTime.ToShortDateString() with Dr. @appointment.Doctor in @appointment.Department</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Reports and Prescriptions -->
+    <div class="row">
+        <!-- Medical Reports -->
+        <div class="col-md-6">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Medical Reports</h5>
+                    <ul class="list-group">
+                        @foreach (var report in Model.MedicalRecords)
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="Report" asp-action="Download" asp-route-id="@report.ReportUrl" class="text-decoration-none" target="_blank">
+                                    @report.ReportName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+</div>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Patient>
+
+@{
+    ViewData["Title"] = "Patients List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Patients List</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Patient Name</th>
+                        <th scope="col">Doctor Name</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@patient.Name</td>
+                            <td>@patient.Doctor?.Name</td>
+                            <td class="text-center">
+                                <!-- Button to view medical records -->
+                                <a asp-action="ViewMedicalRecords" asp-route-id="@patient.Id" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-file-medical"></i> Medical Records
+                                </a>
+
+                                <!-- Button to view appointments -->
+                                <a asp-action="ViewAppointments" asp-route-id="@patient.Id" class="btn btn-info btn-sm">
+                                    <i class="fas fa-calendar-alt"></i> Appointments
+                                </a>
+
+                                <!-- Button to view patient profile -->
+                                <a asp-action="Profile" asp-route-id="@patient.Id" class="btn btn-success btn-sm">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+}

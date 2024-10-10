@@ -1,0 +1,134 @@
+﻿@model Patient
+
+<style>
+    .dashboard-header {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .card-custom {
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-header {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-custom {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-custom:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+</style>
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>Patient Dashboard</h1>
+        <p>Welcome, @Model.Name</p>
+    </div>
+
+    <!-- Patient Info Card -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Patient Information</h5>
+                    <p><strong>Name:</strong> @Model.Name</p>
+                    <p><strong>Age:</strong> @Model.Age</p>
+                    <p><strong>Gender:</strong> @Model.Gender</p>
+                    <p><strong>Blood Group:</strong> @Model.BloodGroup</p>
+                    <p><strong>Contact Number:</strong> @Model.ContactNumber</p>
+                    <p><strong>Emergency Contact:</strong> @Model.EmergencyContact</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Overview Card -->
+        <div class="col-md-8">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Health Overview</h5>
+                    <p><strong>Chronic Conditions:</strong> @Model.ChronicConditions</p>
+                    <p><strong>Allergies:</strong> @Model.Allergies</p>
+                    <p><strong>Upcoming Appointment:</strong></p>
+                    <ul>
+                        @foreach (var appointment in Model.Appointments.Take(1)) 
+                        {
+                            <li>@appointment.Date.ToShortDateString() with Dr. @appointment.Doctor in @appointment.Department</li>
+                        }
+                    </ul>
+                    <a asp-controller="Appointment" asp-action="AllAppointments" asp-route-id="@Model.Id" class="btn btn-info mt-3">View All Appointments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Reports and Prescriptions -->
+    <div class="row">
+        <!-- Medical Reports -->
+        <div class="col-md-6">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Medical Reports</h5>
+                    <ul class="list-group">
+                        @foreach (var report in Model.MedicalReports.Take(1))
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="Report" asp-action="Download" asp-route-id="@report.ReportUrl" class="text-decoration-none" target="_blank">
+                                    @report.ReportName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <a asp-controller="Report" asp-action="AllReports" asp-route-id="@Model.Id" class="btn btn-info mt-3">View All Medical Records</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prescriptions -->
+        <div class="col-md-6">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Prescriptions</h5>
+                    <ul class="list-group">
+                        @foreach (var prescription in Model.Prescriptions)
+                        {
+                            <li class="list-group-item">
+                                @prescription.Medication (Expiry: @prescription.ExpiryDate.ToShortDateString())
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Billing Information -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Billing Information</h5>
+                    <p><strong>Outstanding Balance:</strong> @Model.OutstandingBalance.ToString("C")</p>
+
+                    <form asp-controller="Payment" asp-action="ProcessPayment" method="post">
+                        <button type="submit" class="btn btn-custom">Make Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

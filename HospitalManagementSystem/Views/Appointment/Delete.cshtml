@@ -1,5 +1,4 @@
-﻿@using HospitalManagementSystem.Core.Entities
-@model Appointment
+﻿@model Appointment
 
 @{
     ViewData["Title"] = "Delete Appointment";
@@ -11,17 +10,16 @@
 <hr />
 <div>
     <div>
-        <h5>Appointment ID: @Model.AppointmentID</h5>
+        <h5>Appointment ID: @Model.Id</h5>
          <p>Patient ID: @Model.PatientID</p>
         <p>Doctor ID: @Model.DoctorID</p> 
-        <p>Appointment Date: @Model.AppointmentDate.ToShortDateString()</p>
-        <p>Appointment Time: @Model.AppointmentTime</p>
-        <p>Reason: @Model.Reason</p>
+        <p>Appointment Date: @Model.DateTime.ToShortDateString()</p>
+]        <p>Reason: @Model.Reason</p>
     </div>
 </div>
 
 <form asp-action="Delete">
-    <input type="hidden" asp-for="AppointmentID" />
+    <input type="hidden" asp-for="DateTime" />
     <div class="form-group">
         <input type="submit" value="Delete" class="btn btn-danger" />
     </div>

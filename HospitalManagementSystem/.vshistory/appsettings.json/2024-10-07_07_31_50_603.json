@@ -1,0 +1,19 @@
+{
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=.;DataBase = HospitalTest ;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False"
+  },
+  "Hospital": {
+    "Email": "Hospital.DepiProject@outlook.com",
+    "Name": "Hospital"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "SendGrid": {
+    "SecretKey": "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"
+  }
+}

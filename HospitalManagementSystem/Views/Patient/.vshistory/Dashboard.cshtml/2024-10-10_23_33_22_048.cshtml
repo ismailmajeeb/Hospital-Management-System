@@ -1,0 +1,100 @@
+﻿@model Patient
+
+<style>
+    .dashboard-header {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .card-custom {
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-header {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-custom {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-custom:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+</style>
+<div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <h1>Patient Dashboard</h1>
+        <p>Welcome, @Model.Name</p>
+    </div>
+
+    <!-- Patient Info Card -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Patient Information</h5>
+                    <p><strong>Name:</strong> @Model.Name</p>
+                    <p><strong>Age:</strong> @Model.Age</p>
+                    <p><strong>Gender:</strong> @Model.Gender</p>
+                    <p><strong>Blood Group:</strong> @Model.BloodGroup</p>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Overview Card -->
+        <div class="col-md-8">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Health Overview</h5>
+                   
+                    <p><strong>Upcoming Appointment:</strong></p>
+                    <ul>
+                        @foreach (var appointment in Model.Appointments.Take(1)) 
+                        {
+                            <li>@appointment.AppointmentDateTime.ToShortDateString() with Dr. @appointment.Doctor</li>
+                        }
+                    </ul>
+                    <a asp-controller="Appointment" asp-action="AllAppointments" asp-route-id="@Model.Id" class="btn btn-info mt-3">View All Appointments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Reports and Prescriptions -->
+    <div class="row">
+        <!-- Medical Reports -->
+        <div class="col-md-6">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <h5 class="card-title section-header">Medical Reports</h5>
+                    <ul class="list-group">
+                        @foreach (var report in Model.MedicalRecords.Take(1))
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="Report" asp-action="Download" asp-route-id="#" class="text-decoration-none" target="_blank">
+                                    @report.Discription
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <a asp-controller="Report" asp-action="AllReports" asp-route-id="@Model.Id" class="btn btn-info mt-3">View All Medical Records</a>
+                </div>
+            </div>
+        </div>
+
+ 
+</div>
+

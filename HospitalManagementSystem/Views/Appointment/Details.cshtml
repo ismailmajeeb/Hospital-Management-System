@@ -1,5 +1,4 @@
-﻿@using HospitalManagementSystem.Core.Entities
-@model Appointment
+﻿@model Appointment
 
 @{
     ViewData["Title"] = "Appointment Details";
@@ -15,7 +14,7 @@
             Appointment ID
         </dt>
         <dd class="col-sm-10">
-            @Model.AppointmentID
+            @Model.Id
         </dd>
          <dt class="col-sm-2">
         Patient ID
@@ -33,14 +32,11 @@
             Appointment Date
         </dt>
         <dd class="col-sm-10">
-            @Model.AppointmentDate.ToShortDateString()
+            @Model.DateTime.ToShortDateString()
         </dd>
         <dt class="col-sm-2">
             Appointment Time
         </dt>
-        <dd class="col-sm-10">
-            @Model.AppointmentTime
-        </dd>
         <dt class="col-sm-2">
             Reason
         </dt>

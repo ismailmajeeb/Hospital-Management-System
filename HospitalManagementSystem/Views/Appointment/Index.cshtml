@@ -1,4 +1,3 @@
-@using HospitalManagementSystem.Core.Entities
 @model IEnumerable<Appointment>
 
 @{
@@ -14,8 +13,6 @@
     <thead>
         <tr>
             <th>Appointment ID</th>
-            @*             <th>Patient ID</th>
-            <th>Doctor ID</th> *@
             <th>Appointment Date</th>
             <th>Appointment Time</th>
             <th>Reason</th>
@@ -26,16 +23,15 @@
         @foreach (var appointment in Model)
         {
             <tr>
-                <td>@appointment.AppointmentID</td>
+                <td>@appointment.Id</td>
                 <td>@appointment.PatientID</td>
                 <td>@appointment.DoctorID</td> 
-                <td>@appointment.AppointmentDate.ToShortDateString()</td>
-                <td>@appointment.AppointmentTime</td>
+                <td>@appointment.DateTime.ToShortDateString()</td>
                 <td>@appointment.Reason</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@appointment.AppointmentID" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@appointment.AppointmentID" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@appointment.AppointmentID" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@appointment.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@appointment.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

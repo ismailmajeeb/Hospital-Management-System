@@ -13,24 +13,17 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
     {
         public void Configure(EntityTypeBuilder<Nurse> builder)
         {
-            builder.HasKey(n => n.NurseID);
-builder.Property(n => n.NurseID).ValueGeneratedOnAdd();
+            builder.HasKey(n => n.Id);
+            builder.Property(n => n.Id).ValueGeneratedOnAdd();
 
-builder.Property(n => n.UserID)
-       .IsRequired();
+            builder.Property(n => n.UserId)
+                   .IsRequired();
 
-builder.Property(n => n.Name)
-        .IsRequired();
+            builder.Property(n => n.Name)
+                    .IsRequired();
 
-builder.Property(n => n.Department)
-       .IsRequired()
-       .HasMaxLength(100);
 
-builder.Property(n => n.CreatedAt)
-       .IsRequired();
 
-builder.Property(n => n.UpdatedAt)
-       .IsRequired();
         }
     }
 }

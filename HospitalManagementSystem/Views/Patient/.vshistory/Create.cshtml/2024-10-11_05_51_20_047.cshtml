@@ -1,0 +1,121 @@
+﻿@model YourNamespace.Models.User
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h2 class="text-center mb-4">Create User</h2>
+
+<div class="container">
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        <div class="row">
+            <!-- First Name -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" />
+                </div>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input asp-for="LastName" class="form-control" placeholder="Enter your last name" />
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Address -->
+            <div class="col-md-12 mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                    <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                </div>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- SSN -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="SSN" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                    <input asp-for="SSN" class="form-control" placeholder="Enter your SSN" />
+                </div>
+                <span asp-validation-for="SSN" class="text-danger"></span>
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="DateOfBirth" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                </div>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- User Name -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="UserName" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+                    <input asp-for="UserName" class="form-control" placeholder="Choose a username" />
+                </div>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Phone Number -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="Gender" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                    <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<YourNamespace.Models.Gender>()"></select>
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+}

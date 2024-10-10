@@ -1,5 +1,4 @@
-﻿@using HospitalManagementSystem.Core.Entities
-@model Appointment
+﻿@model Appointment
 
 @{
     ViewData["Title"] = "Create Appointment";
@@ -23,14 +22,14 @@
             <span asp-validation-for="DoctorID" class="text-danger"></span>
             </div> 
             <div class="form-group">
-                <label asp-for="AppointmentDate" class="control-label"></label>
-                <input asp-for="AppointmentDate" class="form-control" />
-                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AppointmentTime" class="control-label"></label>
-                <input asp-for="AppointmentTime" class="form-control" />
-                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for= "DateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Reason" class="control-label"></label>

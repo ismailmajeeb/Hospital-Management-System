@@ -1,6 +1,3 @@
-using HospitalManagementSystem.Core.Entities;
-using HospitalManagementSystem.DataAccess;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystem.Controllers
 {
@@ -45,7 +42,7 @@ namespace HospitalManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _context.Appointments.AddAsync(obj);
-                _context.Complete();
+                await _context.CompleteAsync();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -65,13 +62,13 @@ namespace HospitalManagementSystem.Controllers
         // POST: AppointmentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  IActionResult Edit(Appointment obj)
+        public  async Task<IActionResult> Edit(Appointment obj)
         {
             if (ModelState.IsValid)
             {
                 //obj.UpdatedAt = DateTime.Now;
                 _context.Appointments.Update(obj);
-                _context.Complete();
+               await  _context.CompleteAsync();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -95,7 +92,7 @@ namespace HospitalManagementSystem.Controllers
         {
             var appointment = await _context.Appointments.GetByIdAsync(id);
             _context.Appointments.Delete(appointment);
-            _context.Complete();
+            await _context.CompleteAsync();
             return RedirectToAction("Index");
         }
     }

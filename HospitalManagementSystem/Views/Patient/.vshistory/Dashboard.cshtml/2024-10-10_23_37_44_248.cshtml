@@ -1,0 +1,102 @@
+﻿@model Patient
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Patient Dashboard</h2>
+
+    <div class="row">
+        <!-- Patient Information Card -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Patient Information</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Name:</strong> @Model.Name</li>
+                        <li><strong>Age:</strong> @Model.Age</li>
+                        <li><strong>Gender:</strong> @Model.Gender</li>
+                        <li><strong>Blood Group:</strong> @Model.BloodGroup</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Overview Card -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Health Overview</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Chronic Conditions:</strong> </li>
+                        <li><strong>Allergies:</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming Appointments</h5>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Doctor</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model.Appointments)
+                            {
+                                <tr>
+                                    <td>@appointment.DateTime.ToShortDateString()</td>
+                                    <td>@appointment.Doctor</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescriptions Section -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Prescriptions</h5>
+                    <ul class="list-group">
+                        @foreach (var prescription in Model.MedicalRecords)
+                        {
+                            <li class="list-group-item">
+                                @prescription.Medication (Expiry: @prescription.ExpiryDate.ToShortDateString())
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Reports Section -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Medical Reports</h5>
+                    <ul class="list-group">
+                        @foreach (var report in Model.MedicalRecords)
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="Report" asp-action="Download" asp-route-id="@report.ReportUrl" target="_blank" class="text-decoration-none">
+                                    @report.ReportName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@model Patient
+<div class="container">
+    <h2>Patient Dashboard</h2>
+    <hr />
+
+    <!-- Patient Info -->
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Patient Information</h4>
+            <p><strong>Name:</strong> @Model.Name</p>
+            <p><strong>Age:</strong> @Model.Age</p>
+            <p><strong>Gender:</strong> @Model.Gender</p>
+            <p><strong>Blood Group:</strong> @Model.BloodGroup</p>
+            <p><strong>Contact Number:</strong> @Model.ContactNumber</p>
+            <p><strong>Emergency Contact:</strong> @Model.EmergencyContact</p>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Health Overview -->
+    <h4>Health Overview</h4>
+    <p><strong>Chronic Conditions:</strong> @Model.ChronicConditions</p>
+    <p><strong>Allergies:</strong> @Model.Allergies</p>
+
+    <hr />
+
+    <!-- Appointments -->
+    <h4>Upcoming Appointments</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appointment in Model.Appointments)
+            {
+                <tr>
+                    <td>@appointment.AppointmentDateTime.ToShortDateString()</td>
+                    <td>@appointment.Doctor</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <hr />
+
+    <!-- Medical Reports -->
+    <h4>Medical Reports</h4>
+    <ul>
+        @foreach (var report in Model.MedicalRecords)
+        {
+            <li><a href="#" target="_blank">@report.Discription</a></li>
+        }
+    </ul>
+
+    <hr />
+</div>

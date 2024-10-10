@@ -1,7 +1,4 @@
-﻿using HospitalManagementSystem.Core.Entities;
-using HospitalManagementSystem.DataAccess;
-using HospitalManagementSystem.DataAccess.Persistence;
-using Microsoft.AspNetCore.Mvc;
+﻿
 
 namespace HospitalManagementSystem.Controllers
 {
@@ -45,7 +42,7 @@ namespace HospitalManagementSystem.Controllers
             if (ModelState.IsValid)
             {
                 await _context.Nurses.AddAsync(obj);
-                _context.Complete();
+                await _context.CompleteAsync();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -71,7 +68,7 @@ namespace HospitalManagementSystem.Controllers
             {
                 //obj.UpdatedAt = DateTime.Now;
                 _context.Nurses.Update(obj);
-                _context.Complete();
+                await _context.CompleteAsync();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -95,7 +92,7 @@ namespace HospitalManagementSystem.Controllers
         {
             var nurse = await _context.Nurses.GetByIdAsync(id);
             _context.Nurses.Delete(nurse);
-            _context.Complete();
+            await _context.CompleteAsync();
             return RedirectToAction("Index");
         }
     }
