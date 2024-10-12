@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PatientAppointmentsModel>
+
+<h2>Patient Appointments</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Doctor Name</th>
+            <th>Appointment Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.PatientName</td>
+                <td>@appointment.DoctorName</td>
+                <td>@appointment.DateTime.ToString("g")</td>
+                <td>@appointment.Reason</td>
+                <td>@appointment.Status.ToString()</td>
+                <td>
+                    @if (appointment.Status == Status.Pending)
+                    {
+                        <form>
+                            <input type="submit" asp-controller="Appointment" asp-action="Confirm" class="btn btn-success btn-sm" value="Confirm">
+                            <input type="submit" asp-controller="Appointment"  asp-action="Cancel" class="btn btn-danger btn-sm" value="Cancel">
+
+                        </form>
+                      
+                    }
+                    else
+                    {
+                        <span>@appointment.Status.ToString()</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

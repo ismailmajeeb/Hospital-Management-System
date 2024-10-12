@@ -1,8 +1,5 @@
 ﻿using HospitalManagementSystem.Application.Filters;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace HospitalManagementSystem.Application.Models.User
 {
@@ -26,7 +23,7 @@ namespace HospitalManagementSystem.Application.Models.User
         [Required]
         [Display(Name = "Date of birth")]
         [DateOfBirthValdiation]
-        public DateTime DateOfbirth { get; set; }
+        public DateTime DateOfbirth { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0);
 
         [Required]
         [DataType(DataType.Password)]

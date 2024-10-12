@@ -1,0 +1,70 @@
+﻿
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Patient Profile</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <!-- Personal Info Section -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Personal Information</h5>
+                            <p><strong>Full Name:</strong> @Model.FullName</p>
+                            <p><strong>Gender:</strong> @Model.Gender</p>
+                            <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</p>
+                            <p><strong>National ID/Passport:</strong> @Model.NationalIdOrPassport</p>
+                        </div>
+
+                        <!-- Contact Info Section -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Contact Information</h5>
+                            <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+                            <p><strong>Email Address:</strong> @Model.EmailAddress</p>
+                            <p><strong>Address:</strong> @Model.Address</p>
+                        </div>
+                    </div>
+
+                    <!-- Medical Info Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="mb-3">Medical Information</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Blood Type:</strong> @Model.BloodType</p>
+                                    <p><strong>Allergies:</strong> @Model.Allergies ?? "None"</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Chronic Diseases:</strong> @Model.ChronicDiseases ?? "None"</p>
+                                    <p><strong>Current Medications:</strong> @Model.CurrentMedications ?? "None"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons Section -->
+                    <div class="row justify-content-center">
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("Edit", "Patients", new { id = Model.Id })" class="btn btn-warning w-100">Edit Profile</a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("MakeAppointment", "Appointments", new { patientId = Model.Id })" class="btn btn-success w-100">Make Appointment</a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("ViewAppointments", "Appointments", new { patientId = Model.Id })" class="btn btn-info w-100">View Appointments</a>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a href="@Url.Action("ViewMedicalRecords", "MedicalRecords", new { patientId = Model.Id })" class="btn btn-primary w-100">View Medical Records</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-center text-muted">
+                    Last updated: @DateTime.Now.ToString("yyyy-MM-dd")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

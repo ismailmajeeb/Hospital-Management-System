@@ -85,7 +85,10 @@
                     <li><strong>Allergies:</strong>@Model.Allergies</li>
                 </ul>
                 <!-- Button to view all medical records -->
-                <a href="#" class="btn btn-custom mt-3">View All Medical Records</a>
+                <form asp-action="MedicalRecords" asp-controller="Patient" method="post">
+                    <input type="submit" class="btn btn-custom mt-3" value="View All Medical Records"/>
+                </form>
+
             </div>
         </div>
 
@@ -100,7 +103,9 @@
                     <li><strong>Date:</strong> @Model.NextAppointmentDateTime?.ToShortDateString()</li>
                     <li><strong>Doctor:</strong> @Model.DoctorName</li>
                 </ul>
-                <a href="#" class="btn btn-custom mt-3">View All Appointments</a>
+                <form asp-action="Appointments" asp-controller="Patient" method="post">
+                    <input type="submit" class="btn btn-custom mt-3" value="View All Appointments"/>
+                </form>
             </div>
         </div>
     </div>

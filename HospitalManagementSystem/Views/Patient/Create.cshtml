@@ -1,4 +1,4 @@
-﻿@model CreateUserModel
+﻿@model CreatePatientModel
 @{
     ViewData["Title"] = "Create Patient";
 }
@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post" class="needs-validation" novalidate>
-
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <!-- User Name -->
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
@@ -22,7 +22,6 @@
                             </div>
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
-
                         <!-- Email -->
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label"></label>

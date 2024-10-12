@@ -1,0 +1,79 @@
+﻿
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient text-white rounded-top-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Patient Profile</h4>
+                        <i class="bi bi-person-circle" style="font-size: 2rem;"></i> <!-- Icon added -->
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Personal Info Section -->
+                    <div class="mb-4">
+                        <h5 class="mb-3 text-uppercase border-bottom pb-2">Personal Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong><i class="bi bi-person-fill me-2"></i>Full Name:</strong> @Model.FullName</p>
+                                <p><strong><i class="bi bi-gender-ambiguous me-2"></i>Gender:</strong> @Model.Gender</p>
+                                <p><strong><i class="bi bi-calendar3 me-2"></i>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</p>
+                                <p><strong><i class="bi bi-card-heading me-2"></i>National ID/Passport:</strong> @Model.NationalIdOrPassport</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong><i class="bi bi-phone me-2"></i>Phone Number:</strong> @Model.PhoneNumber</p>
+                                <p><strong><i class="bi bi-envelope me-2"></i>Email Address:</strong> @Model.EmailAddress</p>
+                                <p><strong><i class="bi bi-geo-alt-fill me-2"></i>Address:</strong> @Model.Address</p>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <!-- Medical Info Section -->
+                    <div class="mb-4">
+                        <h5 class="mb-3 text-uppercase border-bottom pb-2">Medical Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong><i class="bi bi-droplet-fill me-2"></i>Blood Type:</strong> @Model.BloodType</p>
+                                <p><strong><i class="bi bi-exclamation-diamond-fill me-2"></i>Allergies:</strong> @Model.Allergies ?? "None"</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong><i class="bi bi-heart-pulse-fill me-2"></i>Chronic Diseases:</strong> @Model.ChronicDiseases ?? "None"</p>
+                                <p><strong><i class="bi bi-capsule me-2"></i>Current Medications:</strong> @Model.CurrentMedications ?? "None"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons Section -->
+                    <div class="row justify-content-between">
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Edit", "Patients", new { id = Model.Id })" class="btn btn-warning w-100 btn-lg rounded-pill d-flex align-items-center justify-content-center">
+                                <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("MakeAppointment", "Appointments", new { patientId = Model.Id })" class="btn btn-success w-100 btn-lg rounded-pill d-flex align-items-center justify-content-center">
+                                <i class="bi bi-calendar-plus me-2"></i>Make Appointment
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("ViewAppointments", "Appointments", new { patientId = Model.Id })" class="btn btn-info w-100 btn-lg rounded-pill d-flex align-items-center justify-content-center">
+                                <i class="bi bi-calendar-check me-2"></i>View Appointments
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("ViewMedicalRecords", "MedicalRecords", new { patientId = Model.Id })" class="btn btn-primary w-100 btn-lg rounded-pill d-flex align-items-center justify-content-center">
+                                <i class="bi bi-file-medical-fill me-2"></i>View Medical Records
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-center text-muted">
+                    Last updated: @DateTime.Now.ToString("yyyy-MM-dd")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

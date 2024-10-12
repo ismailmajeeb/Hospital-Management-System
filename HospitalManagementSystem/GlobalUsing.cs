@@ -14,4 +14,4 @@ global using HospitalManagementSystem.Application.Models.Account;
 global using HospitalManagementSystem.Models;
 global using System.Diagnostics;
 global using System.Security.Claims;
-global using HospitalManagementSystem.Application.Models;
+global using HospitalManagementSystem.Application.Models.Appointments;

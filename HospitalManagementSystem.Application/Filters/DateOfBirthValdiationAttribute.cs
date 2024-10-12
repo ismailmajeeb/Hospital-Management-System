@@ -9,8 +9,9 @@ namespace HospitalManagementSystem.Application.Filters
         public override bool IsValid(object? value)
         {
             var dateOfBirth = (DateTime)value;
-            return dateOfBirth < DateTime.MinValue || dateOfBirth > DateTime.MaxValue ? false : true;
+            return dateOfBirth < DateTime.MinValue || dateOfBirth > DateTime.UtcNow ? false : true;
         }
+
 
     }
 }

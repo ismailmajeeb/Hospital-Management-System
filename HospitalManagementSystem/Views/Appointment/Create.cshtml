@@ -1,47 +1,74 @@
-﻿@model Appointment
-
+﻿@model AddAppointmentModel
+@inject UserManager<ApplicationUser> userManager
 @{
-    ViewData["Title"] = "Create Appointment";
-}
+    var patients = await userManager.GetUsersInRoleAsync(SD.Patient);
+    var patientsUserName = patients.Select(p => p.UserName);
+    var doctors = await userManager.GetUsersInRoleAsync(SD.Doctor);
+    var doctorsUserName = doctors.Select(p => p.UserName);
+ }
+<h2 class="text-center mt-4">Create Appointment</h2>
 
-<h1>Create Appointment</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-calendar-plus mr-2"></i> New Appointment</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Begin form for creating an appointment -->
+                    <form asp-controller="Appointment" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
 
-<h4>Appointment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-             <div class="form-group">
-            <label asp-for="PatientId" class="control-label"></label>
-            <input asp-for="PatientId" class="form-control" />
-            <span asp-validation-for="PatientId" class="text-danger"></span>
+                        <div class="form-group">
+                            <label for="PatientUserName"><i class="fas fa-user"></i> Patient User Name</label>
+                            <select asp-for="PatientUserName" class="form-control" multiple>
+                                @foreach (var patient in patientsUserName)
+                                {
+                                    <option value="@patient">@patient</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DoctorUserName"><i class="fas fa-user-md"></i> Doctor User Name</label>
+                            <select asp-for="DoctorUserName" class="form-control" multiple>
+                                @foreach (var doctor in doctorsUserName)
+                                {
+                                    <option value="@doctor">@doctor</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AppointmentDate"><i class="fas fa-calendar"></i> Appointment Date</label>
+                            <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Reason"><i class="fas fa-info-circle"></i> Reason for Appointment</label>
+                            <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Reason" class="text-danger"></span>
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="text-right">
+                            
+                                <button asp-action="Create" type="submit" class="btn btn-success">
+                                    <i class="fas fa-calendar-check"></i> Create Appointment
+                                </button>
+                           
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-            <label asp-for="DoctorId" class="control-label"></label>
-            <input asp-for="DoctorId" class="form-control" />
-            <span asp-validation-for="DoctorId" class="text-danger"></span>
-            </div> 
-            <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for= "DateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Reason" class="control-label"></label>
-                <textarea asp-for="Reason" class="form-control"></textarea>
-                <span asp-validation-for="Reason" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<!-- Include FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
