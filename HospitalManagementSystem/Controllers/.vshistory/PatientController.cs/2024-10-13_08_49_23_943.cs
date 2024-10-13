@@ -32,7 +32,7 @@ namespace HospitalManagementSystem.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == userId);
 
-            var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.PatientId == patient.Id, a => a.DateTime,includes: ["Doctor"]);
+            var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.PatientId == patient.Id, a => a.DateTime, includes: ["Doctor"]);
             var nextAppointment = Appointments.FirstOrDefault();
             var model = new PatientDashBoardModel
             {
@@ -40,8 +40,8 @@ namespace HospitalManagementSystem.Controllers
                 Gender = patient.Gender,
                 BloodGroup = patient.BloodGroup,
                 Name = patient.Name,
-                NextAppointmentDateTime = nextAppointment?.DateTime,
-                DoctorName = nextAppointment?.Doctor.Name,
+                NextAppointmentDateTime = nextAppointment.DateTime,
+                DoctorName = nextAppointment.Doctor.Name,
                 Allergies = patient.Allergies,
                 ChronicDiseases = patient.ChronicDiseases,
             };

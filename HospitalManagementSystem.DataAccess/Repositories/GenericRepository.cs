@@ -1,4 +1,5 @@
-﻿using HospitalManagementSystem.DataAccess.Persistence;
+﻿using HospitalManagementSystem.DataAccess.Constants;
+using HospitalManagementSystem.DataAccess.Persistence;
 using HospitalManagementSystem.DataAccess.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -89,5 +90,25 @@ namespace HospitalManagementSystem.DataAccess.Repositories
         {
             return await _context.Set<T>().CountAsync(criteria);
         }
+
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria,
+            Expression<Func<T, object>> orderBy = null, string orderByDirection = OrderBy.Ascending, string[] includes = null)
+        {
+            IQueryable<T> query = _context.Set<T>().Where(criteria);
+            if (includes != null)
+                foreach (var include in includes)
+                    query = query.Include(include);
+
+            if (orderBy != null)
+            {
+                if (orderByDirection == OrderBy.Ascending)
+                    query = query.OrderBy(orderBy);
+                else
+                    query = query.OrderByDescending(orderBy);
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
 }

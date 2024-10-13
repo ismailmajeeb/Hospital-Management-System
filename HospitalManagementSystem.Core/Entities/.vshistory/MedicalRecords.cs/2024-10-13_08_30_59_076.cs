@@ -5,7 +5,9 @@ namespace HospitalManagementSystem.Core.Entities
     {
         public int Id {  get; set; }
         public string? Description { set; get; }
-       
+        public string? BloodGroup { get; set; }
+        public string? ChronicConditions { get; set; }
+        public string? Allergies { get; set; }
         public int PatientID { set; get; }
         public int? DoctorID { set; get; }
 

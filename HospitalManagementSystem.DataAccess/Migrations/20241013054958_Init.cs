@@ -211,6 +211,9 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DoctorId = table.Column<int>(type: "int", nullable: true),
+                    BloodGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChronicDiseases = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Allergies = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false)
@@ -268,9 +271,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BloodGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChronicConditions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Allergies = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientID = table.Column<int>(type: "int", nullable: false),
                     DoctorID = table.Column<int>(type: "int", nullable: true)
                 },

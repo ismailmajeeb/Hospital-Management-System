@@ -1,19 +1,21 @@
-﻿namespace HospitalManagementSystem.Core.Entities
-{
-    public class Patient : BaseEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int? DoctorId { get; set; }
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-        public string? BloodGroup { get; set; }
-        public string? ChronicDiseases { get; set; }
-        public string? Allergies { get; set; }
+namespace HospitalManagementSystem.Core.Entities
+{
+    public class Patient:BaseEntity
+    {
+        public int Id {  get; set; }
+        public string Name { get; set; }
+        public int? DoctorId {  get; set; }
 
         public Doctor? Doctor { get; set; }
-        public List<Appointment>? Appointments { get; set; }
+        public List<Appointment>? Appointments {  get; set; }
         public List<MedicalRecords>? MedicalRecords { get; set; }
-
+         
     }
     public static class BloodGroup
     {
@@ -30,5 +32,5 @@
         };
 
     }
-
+    
 }

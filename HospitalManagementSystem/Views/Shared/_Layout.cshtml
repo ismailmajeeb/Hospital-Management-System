@@ -11,13 +11,16 @@
 <body>
     <header class="header sticky-top">
       @if(User.IsInRole(SD.Patient)){
-        <partial name="_PatientNavBar" />
+        <partial name="_PatientNavBar"/>
     }
     </header>
+
      <div class="main">
-        @RenderBody()
+         <div class="container">
+              @RenderBody()
+        </div>
     </div>
-    <footer class="border-top footer text-muted" style="display:flex">
+    <footer class="border-top footer text-muted" style="bottom:-5%">
         <div class="container">
             &copy; 2024 - HospitalManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

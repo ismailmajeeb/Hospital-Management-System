@@ -62,29 +62,29 @@ namespace HospitalManagementSystem.Application.Services
 
             if (!result.Succeeded)
                 return Result.Failure<RegisterResponseModel, DomainError>(new DomainError(result.Errors.Select(e => e.Description)));
+            result = await userManager.AddToRoleAsync(newUser, SD.Patient);
+            if (!result.Succeeded)
+                return Result.Failure<RegisterResponseModel, DomainError>(new DomainError(result.Errors.Select(e => e.Description)));
 
-            await userManager.AddToRoleAsync(newUser, SD.Patient);
-            await unitOfWork.Patients.AddAsync(new Patient
+            await unitOfWork.Patients.AddAsync(new()
             {
                 User = newUser,
                 Gender = Gender.Male,
                 Name = model.FirstName + " " + model.LastName,
-
             });
-            var ConfirmEmailToken = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
-
-            var callBackUrl = GetLink("ConfirmPassword", new { Email = newUser.Email, token = ConfirmEmailToken });
-            await emailSender.SendEmailAsync(newUser.Email, "Confirm Your Email",
-                                           $"To Confirm your Email <a href = {callBackUrl}>here</a>");
-
+            await ConfirmEmailAysnc(newUser.Email);
             await unitOfWork.CompleteAsync();
-            await signInManager.SignInAsync(newUser, isPersistent: true);
+           
+            await signInManager.SignInAsync(newUser, isPersistent: false);
+           
             return new RegisterResponseModel
             {
                 UserName = model.UserName,
                 Email = model.Email,
             };
         }
+         
+
 
         public async Task<Result<LoginResponseModel, DomainError>> LoginAsync(LoginModel model)
         {
@@ -145,6 +145,16 @@ namespace HospitalManagementSystem.Application.Services
             if (!result.Succeeded) return Result.Failure<string, DomainError>(new DomainError("Something wrong has happened"));
 
             return "Confirmed";
+        }
+
+        public async Task ConfirmEmailAysnc(string Email)
+        {
+            var user = await userManager.FindByEmailAsync(Email);
+            var ConfirmEmailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callBackUrl = GetLink("ConfirmPassword", new { Email = Email, token = ConfirmEmailToken });
+            await emailSender.SendEmailAsync(Email, "Confirm Your Email",
+                                           $"To Confirm your Email <a href = {callBackUrl}>here</a>");
+
         }
 
         public async Task<Result<GetAuthenticatorKeyResponseModel, DomainError>> GetAuthenticatorTokenAysnc(GetAuthenticatorTokenModel model)

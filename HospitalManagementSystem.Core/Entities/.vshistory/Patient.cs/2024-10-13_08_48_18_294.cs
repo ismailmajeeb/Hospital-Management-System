@@ -7,7 +7,7 @@
         public int? DoctorId { get; set; }
 
         public string? BloodGroup { get; set; }
-        public string? ChronicDiseases { get; set; }
+        public string? ChronicConditions { get; set; }
         public string? Allergies { get; set; }
 
         public Doctor? Doctor { get; set; }

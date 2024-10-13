@@ -2,6 +2,7 @@
 using HospitalManagementSystem.Application.Models;
 using HospitalManagementSystem.Application.Models.Account;
 using HospitalManagementSystem.Application.Models.User;
+using HospitalManagementSystem.Core.Entities;
 
 
 namespace HospitalManagementSystem.Application.Services.IServices
@@ -12,6 +13,7 @@ namespace HospitalManagementSystem.Application.Services.IServices
         Task<Result<RegisterResponseModel, DomainError>> RegisterAsync(RegisterModel model);
         Task<Result<string>> ForgetPasswordAsync(ForgotPasswordModel model);
         Task<Result<string, DomainError>> ResetPasswordAsync(ResetPasswordModel model);
+        Task ConfirmEmailAysnc(string Email);
         Task<Result<string, DomainError>> ConfirmEmailAysnc(ConfirmEmailModel model);
         Task<Result<TwoFactorAuthenticationResponseModel, DomainError>> EnableTwoFactorAuthenticationAsync(TwoFactorAuthenticationModel model);
         Task<Result<GetAuthenticatorKeyResponseModel, DomainError>> GetAuthenticatorTokenAysnc(GetAuthenticatorTokenModel model);

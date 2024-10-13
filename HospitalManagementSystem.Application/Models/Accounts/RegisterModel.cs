@@ -1,4 +1,5 @@
 ﻿using HospitalManagementSystem.Application.Filters;
+using HospitalManagementSystem.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace HospitalManagementSystem.Application.Models.User
@@ -33,6 +34,8 @@ namespace HospitalManagementSystem.Application.Models.User
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        public Gender Gender { get; set; }
 
     }
     public class RegisterResponseModel

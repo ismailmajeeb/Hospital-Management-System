@@ -49,6 +49,15 @@ namespace HospitalManagementSystem.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ConfirmEmailMessage()
+        {
+            await accountService.ConfirmEmailAysnc(User.FindFirstValue(ClaimTypes.Email));
+            return View();
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailModel model)
@@ -125,6 +134,13 @@ namespace HospitalManagementSystem.Controllers
             return LocalRedirect(model.ReturnUrl);
 
         }
+
+
+
+
+
+
+
 
         [HttpGet]
         [AllowAnonymous]
