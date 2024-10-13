@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PatientAppointmentsModel>
 
 <h2 class="text-center mt-4">Patient Appointments</h2>
-
+<div class="container">
 <div class="table-responsive">
     <table class="table table-striped table-hover shadow-sm">
         <thead class="thead-dark">
@@ -32,11 +32,8 @@
                     <td class="text-center">
                         @if (appointment.Status == Status.Pending)
                         {
-                            <form asp-controller="Appointment" method="post" class="d-flex justify-content-center">
-                                <button type="submit" asp-route-id="@appointment.AppointmentId" asp-action="Confirm" class="btn btn-success btn-sm mr-2">
-                                     Confirm
-                                </button>
-                                <button type="submit" asp-action="Cancel" asp-route-id="@appointment.AppointmentId" class="btn btn-danger btn-sm mr-2">
+                            <form asp-controller="Appointment" asp-action="Cancel" method="post" class="d-flex justify-content-center">
+                                <button type="submit" asp-controller="Appointment" asp-action="Cancel" asp-route-id="@appointment.AppointmentId" class="btn btn-danger btn-sm mr-2">
                                      Cancel
                                 </button>
                             </form>
@@ -50,6 +47,7 @@
             }
         </tbody>
     </table>
+</div>
 </div>
 
 <!-- Optionally include FontAwesome for icons -->

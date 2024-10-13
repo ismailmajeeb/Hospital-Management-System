@@ -21,8 +21,7 @@ namespace HospitalManagementSystem.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> LogOff()
         {
             await accountService.SignOutAsync();

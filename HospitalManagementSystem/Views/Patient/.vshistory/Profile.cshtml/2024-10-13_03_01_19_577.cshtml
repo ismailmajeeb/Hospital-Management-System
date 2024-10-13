@@ -1,0 +1,178 @@
+﻿@model PatientProfileModel
+
+<div class="profile-container">
+    <h2 class="profile-title">Patient Profile</h2>
+
+    <!-- Basic Information -->
+    <div class="profile-card">
+        <h4>Basic Info</h4>
+        <div class="info-group">
+            <span><strong>Name:</strong> @Model.Name</span>
+            <span><strong>Email:</strong> @Model.Email</span>
+            <span><strong>Phone:</strong> @Model.PhoneNumber</span>
+            <span>
+                <strong>Email Confirmed:</strong>
+                @if (Model.IsEmailConfirmed)
+                {
+                    <span class="status-badge success">Confirmed</span>
+                }
+                else
+                {
+                    <span class="status-badge danger">Not Confirmed</span>
+                }
+            </span>
+        </div>
+        <div class="info-group">
+            <span><strong>Gender:</strong> @Model.Gender</span>
+            <span><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</span>
+            <span><strong>National ID/Passport:</strong> @Model.NationalIdOrPassport</span>
+        </div>
+    </div>
+
+    <!-- Medical Information -->
+    <div class="profile-card">
+        <h4>Medical Info</h4>
+        <div class="info-group">
+            <span><strong>Allergies:</strong> @Model.Allergies</span>
+            <span><strong>Chronic Diseases:</strong> @Model.ChronicDiseases</span>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="profile-card">
+        <h4>Security Settings</h4>
+        <form asp-action="EnableTwoFactor" method="post" class="security-form">
+            <label class="form-check">
+                <input type="checkbox" name="enable" value="true" @(Model.IsTwoFactorEnabled ? "checked" : "") />
+                <span>Enable Two-Factor Authentication</span>
+            </label>
+            <button type="submit" class="btn-save">Save</button>
+        </form>
+
+        <form asp-action="ForgotPassword" method="post" class="security-form">
+            <input type="hidden" name="email" value="@Model.Email" />
+            <button type="submit" class="btn-reset">Forgot Password</button>
+        </form>
+    </div>
+
+    <!-- Edit Button -->
+    <div class="edit-btn-container">
+        <a href="@Url.Action("Edit", "Patient", new { id = 1 })" class="btn-edit">Edit Profile</a>
+    </div>
+</div>
+
+<!-- Stylish CSS -->
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 30px auto;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background-color: #f4f7f9;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .profile-card {
+        background-color: #ffffff;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    h4 {
+        color: #34495e;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .info-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        color: white;
+        font-size: 12px;
+    }
+
+        .status-badge.success {
+            background-color: #27ae60;
+        }
+
+        .status-badge.danger {
+            background-color: #e74c3c;
+        }
+
+    .security-form {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+
+        .form-check input {
+            margin-right: 10px;
+        }
+
+    .btn-save {
+        background-color: #3498db;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-save:hover {
+            background-color: #2980b9;
+        }
+
+    .btn-reset {
+        background-color: #f39c12;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-reset:hover {
+            background-color: #e67e22;
+        }
+
+    .edit-btn-container {
+        text-align: right;
+    }
+
+    .btn-edit {
+        background-color: #2ecc71;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-edit:hover {
+            background-color: #27ae60;
+        }
+</style>

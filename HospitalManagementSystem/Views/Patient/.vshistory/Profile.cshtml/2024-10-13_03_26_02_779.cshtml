@@ -1,0 +1,181 @@
+﻿@model PatientProfileModel
+
+<div class="profile-container">
+    <h2 class="profile-title">Patient Profile</h2>
+
+    <!-- Basic Information -->
+    <div class="profile-card">
+        <h4>Basic Info</h4>
+        <div class="info-group">
+            <span><strong>Name:</strong> @Model.Name</span>
+            <span><strong>Email:</strong> @Model.Email</span>
+            <span><strong>Phone:</strong> @Model.PhoneNumber</span>
+            <span>
+                <strong>Email Confirmed:</strong>
+                @if (Model.IsEmailConfirmed)
+                {
+                    <span class="status-badge success">Confirmed</span>
+                }
+                else
+                {
+                    <span class="status-badge danger">Not Confirmed</span>
+                }
+            </span>
+        </div>
+        <div class="info-group">
+            <span><strong>Gender:</strong> @Model.Gender</span>
+            <span><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</span>
+            <span><strong>National ID/Passport:</strong> @Model.NationalIdOrPassport</span>
+        </div>
+    </div>
+
+    <!-- Medical Information -->
+    <div class="profile-card">
+        <h4>Medical Info</h4>
+        <div class="info-group">
+            <span><strong>Allergies:</strong> @Model.Allergies</span>
+            <span><strong>Chronic Diseases:</strong> @Model.ChronicDiseases</span>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="profile-card">
+        <h4>Security Settings</h4>
+
+        <!-- Two-Factor Authentication Button -->
+        <form asp-action="ToggleTwoFactorAuth" method="post" class="security-form">
+            <button type="submit" class="btn-two-factor">
+                @if (Model.IsTwoFactorEnabled)
+                {
+                    <span>Two-Factor Authentication Enabled</span>
+                }
+                else
+                {
+                    <span>Enable Two-Factor Authentication</span>
+                }
+            </button>
+        </form>
+
+        <form asp-action="ForgotPassword" method="post" class="security-form">
+            <input type="hidden" name="email" value="@Model.Email" />
+            <button type="submit" class="btn-forgot-password">Forgot Password</button>
+        </form>
+    </div>
+
+    <!-- Edit Button -->
+    <div class="edit-btn-container">
+        <a href="@Url.Action("Edit", "Patient", new { id = 1 })" class="btn-edit">Edit Profile</a>
+    </div>
+</div>
+
+<!-- New Flat Design CSS -->
+<style>
+    .profile-container {
+        max-width: 850px;
+        margin: 45px auto;
+        font-family: 'Roboto', sans-serif;
+        padding: 30px;
+        background-color: #f9fafc;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .profile-title {
+        text-align: center;
+        color: #2d3a47;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .profile-card {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        border: 1px solid #e0e4e8;
+        transition: box-shadow 0.3s;
+    }
+
+        .profile-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+    .info-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        color: white;
+    }
+
+        .status-badge.success {
+            background-color: #28a745;
+        }
+
+        .status-badge.danger {
+            background-color: #dc3545;
+        }
+
+    .security-form {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* Button Styles */
+    .btn-two-factor, .btn-forgot-password {
+        padding: 12px 30px;
+        background-color: #17a2b8;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        .btn-two-factor:hover, .btn-forgot-password:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+
+    .btn-forgot-password {
+        background-color: #ffc107;
+    }
+
+        .btn-forgot-password:hover {
+            background-color: #e0a800;
+        }
+
+    /* Edit Profile Button */
+    .edit-btn-container {
+        text-align: center;
+    }
+
+    .btn-edit {
+        padding: 14px 40px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+        .btn-edit:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+</style>

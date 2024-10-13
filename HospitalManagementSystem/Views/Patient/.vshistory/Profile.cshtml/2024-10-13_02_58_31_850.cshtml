@@ -1,0 +1,68 @@
+﻿
+<div class="container">
+    <h2>Patient Profile</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <h4>Basic Info</h4>
+            <p><strong>Name:</strong> @Model.Name</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p>
+                <strong>Email Confirmed:</strong>
+                @if (Model.IsEmailConfirmed)
+                {
+                    <span class="badge badge-success">Confirmed</span>
+                }
+                else
+                {
+                    <span class="badge badge-danger">Not Confirmed</span>
+                }
+            </p>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h4>Security Settings</h4>
+            <form asp-action="EnableTwoFactor" method="post">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="enable" value="true" @(Model.IsTwoFactorEnabled ? "checked" : "") />
+                    <label class="form-check-label">
+                        Enable Two-Factor Authentication
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Save</button>
+            </form>
+
+            <hr />
+
+            <form asp-action="ForgotPassword" method="post">
+                <input type="hidden" name="email" value="@Model.Email" />
+                <button type="submit" class="btn btn-warning mt-2">Forgot Password</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        font-family: Arial, sans-serif;
+    }
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+    .card h4 {
+        margin-bottom: 15px;
+    }
+    .badge-success {
+        background-color: green;
+    }
+    .badge-danger {
+        background-color: red;
+    }
+</style>

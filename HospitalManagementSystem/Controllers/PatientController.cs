@@ -146,15 +146,20 @@ namespace HospitalManagementSystem.Controllers
             return View();
         }
 
+        
+        
+        
+        
         [HttpGet]
         public IActionResult Profile()
         {
             return View(new PatientProfileModel());
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Patient)]
+
+
+
+        [HttpGet]
         public async Task<IActionResult> Appointments()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -173,6 +178,40 @@ namespace HospitalManagementSystem.Controllers
             });
             return View(model);
 
+        }
+
+
+
+
+        /// <summary>
+        /// Patient makeing Apointment
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult MakeAppointment()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Patient)]
+        public async Task<IActionResult> MakeAppointment(PatientMakeAppointmentModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            Appointment appointment = new()
+            {
+                DateTime = model.AppointmentDate,
+                Reason = model.Reason,
+                Doctor = await unitOfWork.Doctors.FindAsync(d => d.User.UserName == model.DoctorUserName),
+                Status = Status.Pending,
+                Patient = await unitOfWork.Patients.FindAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)),
+            };
+            
+            await unitOfWork.Appointments.AddAsync(appointment);
+            await unitOfWork.CompleteAsync();
+
+            return RedirectToAction("Dashboard");
         }
     }
 }
