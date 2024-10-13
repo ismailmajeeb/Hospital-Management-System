@@ -210,7 +210,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoctorId = table.Column<int>(type: "int", nullable: true),
                     BloodGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChronicDiseases = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Allergies = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -227,12 +226,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Patients_Doctors_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "Doctors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,7 +235,7 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientId = table.Column<int>(type: "int", nullable: false),
-                    DoctorId = table.Column<int>(type: "int", nullable: true),
+                    DoctorId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -255,13 +248,13 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -361,11 +354,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_DoctorId",
-                table: "Patients",
-                column: "DoctorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Patients_UserId",
                 table: "Patients",
                 column: "UserId");
@@ -402,10 +390,10 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Patients");
+                name: "Doctors");
 
             migrationBuilder.DropTable(
-                name: "Doctors");
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

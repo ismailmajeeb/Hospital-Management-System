@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalManagementSystem.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241013054958_Init")]
+    [Migration("20241013182416_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -110,7 +110,7 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<int>("PatientId")
@@ -237,9 +237,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Property<string>("ChronicDiseases")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
@@ -252,8 +249,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
 
                     b.HasIndex("UserId");
 
@@ -398,12 +393,13 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.HasOne("HospitalManagementSystem.Core.Entities.Doctor", "Doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HospitalManagementSystem.Core.Entities.Patient", "Patient")
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Doctor");
@@ -453,18 +449,11 @@ namespace HospitalManagementSystem.DataAccess.Migrations
 
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Patient", b =>
                 {
-                    b.HasOne("HospitalManagementSystem.Core.Entities.Doctor", "Doctor")
-                        .WithMany("Patients")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("HospitalManagementSystem.Core.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Doctor");
 
                     b.Navigation("User");
                 });
@@ -525,8 +514,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("MedicalRecords");
-
-                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Patient", b =>

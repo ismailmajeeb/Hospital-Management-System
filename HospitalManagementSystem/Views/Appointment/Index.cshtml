@@ -23,14 +23,12 @@
         @foreach (var appointment in Model)
         {
             <tr>
-                <td>@appointment.Id</td>
                 <td>@appointment.PatientId</td>
                 <td>@appointment.DoctorId</td> 
                 <td>@appointment.DateTime.ToShortDateString()</td>
                 <td>@appointment.Reason</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@appointment.Id" class="btn btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@appointment.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>

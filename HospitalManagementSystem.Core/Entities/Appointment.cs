@@ -10,12 +10,12 @@ namespace HospitalManagementSystem.Core.Entities
     {
         public int Id { get; set; }
         public int PatientId { get; set; }
-        public int? DoctorId { get; set; }
+        public int DoctorId { get; set; }
         public DateTime DateTime { get; set; }
         public string Reason { get; set; }
         public Status Status { get; set; }
         public Patient Patient { get; set; }
-        public Doctor? Doctor { get; set; }
+        public Doctor  Doctor { get; set; }
     }
     public enum Status
     {

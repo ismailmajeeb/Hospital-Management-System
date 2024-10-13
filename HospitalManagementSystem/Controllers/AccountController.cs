@@ -55,7 +55,7 @@ namespace HospitalManagementSystem.Controllers
         public async Task<IActionResult> ConfirmEmailMessage()
         {
             await accountService.ConfirmEmailAysnc(User.FindFirstValue(ClaimTypes.Email));
-            return View();
+            return View(true);
         }
 
         [HttpGet]
@@ -134,13 +134,6 @@ namespace HospitalManagementSystem.Controllers
             return LocalRedirect(model.ReturnUrl);
 
         }
-
-
-
-
-
-
-
 
         [HttpGet]
         [AllowAnonymous]

@@ -9,10 +9,6 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
     {
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
-            builder.HasKey(a => a.Id);
-            builder.Property(a => a.Id)
-                   .ValueGeneratedOnAdd();
-
 
             builder.Property(a => a.Reason)
                    .HasMaxLength(500);

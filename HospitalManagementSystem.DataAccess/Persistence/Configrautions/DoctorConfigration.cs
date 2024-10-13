@@ -16,11 +16,11 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
                     .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(d => d.Patients)
-                   .WithOne(m => m.Doctor)
-                   .HasForeignKey(m => m.DoctorId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
-
+                   .WithMany(m => m.Doctors)
+                   .UsingEntity<Appointment>(
+                               l => l.HasOne(c => c.Patient).WithMany(x => x.Appointments).HasForeignKey(x => x.PatientId).OnDelete(DeleteBehavior.Restrict),
+                               r => r.HasOne(c => c.Doctor).WithMany(x => x.Appointments).HasForeignKey(x => x.DoctorId).OnDelete(DeleteBehavior.Cascade)
+                   );                 
         }
     }
 }
