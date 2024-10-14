@@ -17,9 +17,20 @@ namespace HospitalManagementSystem.Controllers
         public async Task<ActionResult> Index()
         {
 
-            var appointments = await _context.Appointments.GetAllAsync();
-            return View(appointments);
+            var appointments = await _context.Appointments.FindAllAsync(a => true, includes: ["Doctor","Patient"]);
+            var model = appointments.Select(a => new AppointmentsIndexModel
+            {
+                
+                AppointmentDate = a.DateTime,
+                DoctorName = a.Doctor.Name,
+                PatientName = a.Patient.Name,
+                Status = a.Status,
+                Id = a.Id,
+            });
+            return View(model);
         }
+        
+        
         [HttpGet]
         [Authorize(Roles = SD.Admin)]
         public IActionResult Create()

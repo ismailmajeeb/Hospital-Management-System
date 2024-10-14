@@ -11,7 +11,7 @@ namespace HospitalManagementSystem.Application.Models.Appointments
 {
     public class PatientMakeAppointmentModel
     {
-        [AppointmentDateValdiation]
+        [AppointmentDate]
         [Display(Name = "Appointment Date")]
         public DateTime AppointmentDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         public string Reason { get; set; }

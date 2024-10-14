@@ -12,6 +12,6 @@ namespace HospitalManagementSystem.Core.Entities
         public string? SSN { get; set; }
         public string? Address { get; set; }
         public DateTime? DateOfbirth { get; set; }
-
+        public Gender Gender { get; set; }
     }
 }

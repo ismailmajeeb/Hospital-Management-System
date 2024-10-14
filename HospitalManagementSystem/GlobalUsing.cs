@@ -15,3 +15,9 @@ global using HospitalManagementSystem.Models;
 global using System.Diagnostics;
 global using System.Security.Claims;
 global using HospitalManagementSystem.Application.Models.Appointments;
+global using HospitalManagementSystem.Application.Models.Doctors;
+global using HospitalManagementSystem.Application.Models.Nurses;
+global using HospitalManagementSystem.Application.Models.Admins;
+
+
+

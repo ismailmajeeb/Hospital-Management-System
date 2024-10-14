@@ -13,6 +13,8 @@ namespace HospitalManagementSystem.Controllers
 
         public IActionResult Index()
         {
+            if (User.IsInRole(SD.Admin))
+                return RedirectToAction("Dashboard", "Admin");
             return View();
         }
 

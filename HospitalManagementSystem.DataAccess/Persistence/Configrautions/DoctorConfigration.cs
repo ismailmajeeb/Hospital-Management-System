@@ -10,11 +10,7 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
-            builder.HasMany(d => d.MedicalRecords)
-                    .WithOne(m => m.Doctor)
-                    .HasForeignKey(m => m.DoctorID)
-                    .OnDelete(DeleteBehavior.Restrict);
-
+        
             builder.HasMany(d => d.Patients)
                    .WithMany(m => m.Doctors)
                    .UsingEntity<Appointment>(

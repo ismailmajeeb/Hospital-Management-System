@@ -1,37 +1,104 @@
-@model IEnumerable<Appointment>
+@model IEnumerable<AppointmentsIndexModel>
 
 @{
     ViewData["Title"] = "Appointments List";
 }
 
-<h1>Appointments</h1>
+<div class="container mt-5">
+    <h2 class="text-center">Appointments List</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Appointment</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Appointment ID</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Reason</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var appointment in Model)
-        {
-            <tr>
-                <td>@appointment.PatientId</td>
-                <td>@appointment.DoctorId</td> 
-                <td>@appointment.DateTime.ToShortDateString()</td>
-                <td>@appointment.Reason</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@appointment.Id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
+    <!-- Add New Appointment Button -->
+    <div class="container mt-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-right mb-3">
+                <form asp-controller="Appointment" asp-action="Create" method="get">
+                    <button type="submit" class="btn add-new-btn-sm">
+                        <i class="fas fa-user-plus"></i> Add Appointment
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Doctor Name</th>
+                            <th scope="col">Patient Name</th>
+                            <th scope="col"> Date</th>
+                            <th scope="col"> Status</th>
+
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Appointment in Model)
+                        {
+                            <tr>
+                                <td>@Appointment.DoctorName</td>
+                                <td>@Appointment.PatientName</td>
+                                <td>@Appointment.AppointmentDate.ToString("g")</td>
+                                <!-- Status Column -->
+                                <td class="text-center">
+                                    <span class="@(Appointment.Status == Status.Pending ? "text-warning" : Appointment.Status == Status.Confirmed ? "text-success" : "text-danger")">
+                                        @Appointment.Status.ToString()
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @if (Appointment.Status == Status.Pending)
+                                    {
+                                        <form asp-controller="Appointment" method="post">
+                                            <button type="submit" asp-action="Cancel" onsubmit="return confirmDelete();" asp-route-id="@Appointment.Id" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No actions available</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this Appointment?");
         }
-    </tbody>
-</table>
+    </script>
+}
+
+<style>
+    /* Smaller Add New Appointment Button Styling */
+    .add-new-btn-sm {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        padding: 5px 12px; /* Reduced padding */
+        font-size: 14px; /* Smaller font */
+        border-radius: 5px; /* Slightly smaller border radius */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .add-new-btn-sm i {
+            margin-right: 5px;
+        }
+
+        .add-new-btn-sm:hover {
+            background-color: #e65c00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-new-btn-sm:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.4);
+        }
+</style>

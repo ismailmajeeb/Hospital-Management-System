@@ -19,7 +19,7 @@ namespace HospitalManagementSystem.Controllers
         public async Task<IActionResult> Index()
         {
             var temp = await unitOfWork.Patients.GetAllAsync();
-            List<PatientsIndexModel> model = temp.Select(p => new PatientsIndexModel { UserId = p.UserId, Name = p.Name }).ToList();
+            IEnumerable<PatientsIndexModel> model = temp.Select(p => new PatientsIndexModel { UserId = p.UserId, Name = p.Name });
             return View(model);
 
         }
@@ -37,7 +37,7 @@ namespace HospitalManagementSystem.Controllers
             var model = new PatientDashBoardModel
             {
                 Age = patient.Age,
-                Gender = patient.Gender,
+                Gender = user.Gender,
                 BloodGroup = patient.BloodGroup,
                 Name = patient.Name,
                 NextAppointmentDateTime = nextAppointment?.DateTime,
@@ -70,6 +70,8 @@ namespace HospitalManagementSystem.Controllers
                 UserName = model.UserName,
                 SSN = model.SSN,
                 PhoneNumber = model.PhoneNumber,
+                Gender = model.Gender,
+                
 
             };
             var result = await userManager.CreateAsync(user);
@@ -77,12 +79,16 @@ namespace HospitalManagementSystem.Controllers
                 ModelState.AddModelError("", e.Description);
             if (!result.Succeeded) return View(model);
 
+            var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
+
             await unitOfWork.Patients.AddAsync(new()
             {
-                Age = DateTime.Now.Year - model.DateOfBirth.Year,
+                Age = year != 0 ? DateTime.Now.Year - year : 0,
                 Name = model.FirstName + " " + model.LastName,
                 User = user,
-                Gender = model.Gender,
+                Allergies = model.Allergies,
+                BloodGroup = model.BloodGroup,
+                ChronicDiseases = model.ChronicDiseases,
             });
 
             await unitOfWork.CompleteAsync();
@@ -95,35 +101,39 @@ namespace HospitalManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = SD.Admin)]
-        public async Task<IActionResult> Delete(string Id)
+        public async Task<IActionResult> Delete(int Id)
         {
 
 
-            var user = await userManager.FindByIdAsync(Id);
+            var user = await unitOfWork.Patients.FindAsync(p => p.Id == Id);
             if (user == null) return View("Error");
-            await userManager.DeleteAsync(user);
-
+            unitOfWork.Patients.Delete(user);
+            await unitOfWork.CompleteAsync();
             var temp = await unitOfWork.Patients.GetAllAsync();
             return RedirectToAction("Index");
         }
 
-
-
         [HttpGet]
         [Authorize(Roles = $"{SD.Admin},{SD.Patient}")]
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Edit(string Id = null)
         {
-            var patient = await unitOfWork.Patients.GetByIdAsync(Id);
-            var user = await userManager.FindByIdAsync(patient?.UserId);
-            if (user == null || patient == null) return View("Error");
+            if (Id == null)
+            {
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+        
+            var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == Id);
+            if (patient == null) return View("Error");
+            var user = await userManager.FindByIdAsync(Id);
+            if (user == null) return View("Error");
             var model = new EditPatientModel
             {
                 Id = Id,
-                Gender = patient.Gender,
+                Gender = user.Gender,
                 FirstName = patient.Name.Split().FirstOrDefault(),
                 LastName = patient.Name.Split().LastOrDefault(),
                 Address = user.Address,
-                DateOfBirth = user.DateOfbirth.Value,
+                DateOfBirth = user.DateOfbirth,
                 Email = user.Email,
                 SSN = user.SSN,
                 PhoneNumber = user.PhoneNumber,
@@ -141,34 +151,36 @@ namespace HospitalManagementSystem.Controllers
         public async Task<IActionResult> Edit(EditPatientModel model)
         {
             if (!ModelState.IsValid) return View(model);
-            var patient = await unitOfWork.Patients.GetByIdAsync(model.Id);
-
+            var user = await userManager.FindByIdAsync(model.Id);
+            if (user == null) return View("Error");
+            var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == user.Id);
             if (patient == null) return View("Error");
             patient.Name = model.FirstName + " " + model.LastName;
-            patient.Age = DateTime.Now.Year - model.DateOfBirth.Year;
-            patient.Gender = model.Gender;
+            var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
+
+            patient.Age = (year != 0) ? DateTime.Now.Year - year : 0;
             patient.Allergies = model.Allergies;
             patient.ChronicDiseases = model.ChronicDiseases;
             patient.BloodGroup = model.BloodGroup;
-           
+
             if (patient == null) return View("Error");
             unitOfWork.Patients.Update(patient);
-            var user = await userManager.FindByNameAsync(model.UserName);
-            user.PhoneNumber = model.PhoneNumber;
             user.UserName = model.UserName;
+            user.PhoneNumber = model.PhoneNumber;
             user.Email = model.Email;
             user.Address = model.Address;
+            user.Gender = model.Gender;
             user.DateOfbirth = model.DateOfBirth;
             user.SSN = model.SSN;
 
             await userManager.UpdateAsync(user);
 
             await unitOfWork.CompleteAsync();
-            return RedirectToAction("Profile", "Patient");
+            if (User.IsInRole(SD.Patient))
+                return RedirectToAction("Profile", "Patient");
+            return RedirectToAction("Index","Patient");
         }
 
-        
-        
         [HttpGet]
         [Authorize(Roles = SD.Patient)]
         public async Task<IActionResult> Profile()
@@ -176,7 +188,7 @@ namespace HospitalManagementSystem.Controllers
 
             var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
             var user = await userManager.GetUserAsync(User);
-            if(user == null || patient == null) return View("Error");
+            if (user == null || patient == null) return View("Error");
             return View(new PatientProfileModel()
             {
                 Id = patient.Id,
@@ -186,7 +198,7 @@ namespace HospitalManagementSystem.Controllers
                 IsEmailConfirmed = user.EmailConfirmed,
                 NationalIdOrPassport = user.SSN,
                 PhoneNumber = user.PhoneNumber,
-                Gender = patient.Gender,
+                Gender = user.Gender,
                 IsTwoFactorEnabled = user.TwoFactorEnabled,
                 DateOfBirth = user.DateOfbirth,
                 Allergies = patient.Allergies,
@@ -196,14 +208,14 @@ namespace HospitalManagementSystem.Controllers
         }
 
 
-
         [HttpGet]
-        [Authorize(Roles = SD.Patient)]
-        public async Task<IActionResult> Appointments()
+        [Authorize(Roles = $"{SD.Admin},{SD.Patient}")]
+        public async Task<IActionResult> Appointments(string Id = null)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (Id == null)
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var patient = await unitOfWork.Patients.FindAsync(x => x.UserId == userId);
+            var patient = await unitOfWork.Patients.FindAsync(x => x.UserId == Id);
             if (patient == null) return View("Error");
             var temp = await unitOfWork.Appointments.FindAllAsync(a => a.PatientId == patient.Id, ["Doctor"]);
             if (temp == null) return View(new List<PatientAppointmentsModel>());
@@ -219,15 +231,12 @@ namespace HospitalManagementSystem.Controllers
 
         }
 
-
-
-
         /// <summary>
         /// Patient makeing Apointment
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = SD.Patient)]
+        [Authorize(Roles = $"{SD.Admin},{SD.Patient}")]
         public IActionResult MakeAppointment()
         {
             return View();
@@ -247,7 +256,7 @@ namespace HospitalManagementSystem.Controllers
                 Status = Status.Pending,
                 Patient = await unitOfWork.Patients.FindAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)),
             };
-            
+
             await unitOfWork.Appointments.AddAsync(appointment);
             await unitOfWork.CompleteAsync();
 

@@ -9,14 +9,13 @@ namespace HospitalManagementSystem.Core.Entities
     public class BaseEntity
     {
         public string UserId { get; set; }
-        public ApplicationUser User{ get; set; }
+        public ApplicationUser User { get; set; }
         public int Age { get; set; }
-        public Gender Gender { get; set; }
     }
     public enum Gender
     {
         Male,
         Female
-        
+
     }
 }

@@ -40,10 +40,22 @@ namespace HospitalManagementSystem.DataAccess.Persistence
                     NormalizedName = SD.Patient.ToUpper(),
                 });
 
-                var admin = new ApplicationUser { UserName = "admin", Email = "admin@admin.com", EmailConfirmed = true };
+                var admin = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@admin.com",
+                    EmailConfirmed = true,
+                    Gender = Gender.Male,
+                };
                 await userManager.CreateAsync(admin, "Admin123.?");
 
-                var doctor = new ApplicationUser { UserName = "doctor", Email = "Doctor@admin.com", EmailConfirmed = true };
+                var doctor = new ApplicationUser
+                {
+                    UserName = "doctor",
+                    Email = "Doctor@admin.com",
+                    EmailConfirmed = true,
+                    Gender = Gender.Male,
+                };
                 await userManager.CreateAsync(doctor, "Admin123.?");
 
                 await userManager.AddToRoleAsync(admin, SD.Admin);
@@ -53,7 +65,6 @@ namespace HospitalManagementSystem.DataAccess.Persistence
                 {
                     User = doctor,
                     Name = "Doctor",
-                    Gender = Gender.Male,
                     UserId = doctor.Id,
                 });
             }

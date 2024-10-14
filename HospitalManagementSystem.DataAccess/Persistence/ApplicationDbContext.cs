@@ -15,7 +15,6 @@ namespace HospitalManagementSystem.DataAccess.Persistence
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<MedicalRecords> MedicalRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

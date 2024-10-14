@@ -1,0 +1,71 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-hospital-user"></i> Admin Dashboard
+        </a>
+
+        <!-- Navbar Toggle for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <!-- Dashboard Link -->
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/Admin/Dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+
+                <!-- Patients Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/Patients/All">
+                        <i class="fas fa-user-injured"></i> Patients
+                    </a>
+                </li>
+
+                <!-- Doctors Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/Doctors/All">
+                        <i class="fas fa-user-md"></i> Doctors
+                    </a>
+                </li>
+
+                <!-- Nurses Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/Nurses/All">
+                        <i class="fas fa-user-nurse"></i> Nurses
+                    </a>
+                </li>
+
+                <!-- Appointments Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/Appointments/All">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                </li>
+
+                <!-- Dropdown for Admin Settings -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cogs"></i> Settings
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Manage Users</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/Admin/Logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Add margin-top to your main content to avoid overlap with fixed navbar -->
+<div class="container" style="margin-top: 80px;">
+    <!-- Your existing dashboard content goes here -->
+</div>

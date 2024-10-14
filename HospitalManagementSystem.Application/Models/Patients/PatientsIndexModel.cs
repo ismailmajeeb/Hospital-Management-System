@@ -7,6 +7,7 @@ namespace HospitalManagementSystem.Application.Models.Patients
     public class PatientsIndexModel
     {
         public string UserId { get; set; }
+
         public string Name { get; set; }
 
     }

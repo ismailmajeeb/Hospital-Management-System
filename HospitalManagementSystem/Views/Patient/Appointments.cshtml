@@ -1,54 +1,104 @@
 ﻿@model IEnumerable<PatientAppointmentsModel>
 
-<h2 class="text-center mt-4">Patient Appointments</h2>
-<div class="container">
-<div class="table-responsive">
-    <table class="table table-striped table-hover shadow-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th>Doctor Name</th>
-                <th>Appointment Date</th>
-                <th>Reason</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var appointment in Model)
-            {
-                <tr>
-                    <td>@appointment.DoctorName</td>
-                    <td>@appointment.DateTime.ToString("g")</td>
-                    <td>@appointment.Reason</td>
+@{
+    ViewData["Title"] = "Appointments List";
+}
 
-                    <!-- Status Column -->
-                    <td class="text-center">
-                        <span class="@(appointment.Status == Status.Pending ? "text-warning" : appointment.Status == Status.Confirmed ? "text-success" : "text-danger")">
-                            @appointment.Status.ToString()
-                        </span>
-                    </td>
+<div class="container mt-5">
+    <h2 class="text-center">Appointments List</h2>
 
-                    <!-- Actions Column -->
-                    <td class="text-center">
-                        @if (appointment.Status == Status.Pending)
+    <!-- Add New Appointment Button -->
+    <div class="container mt-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-right mb-3">
+                <form asp-controller="Patient" asp-action="MakeAppointment" method="get">
+                    <button type="submit" class="btn add-new-btn-sm">
+                        <i class="fas fa-user-plus"></i> Make Appointment
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Doctor Name</th>
+                            <th scope="col"> Date</th>
+                            <th scope="col"> Reason</th>
+                            <th scope="col"> Status</th>
+
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Appointment in Model)
                         {
-                            <form asp-controller="Appointment" asp-action="Cancel" method="post" class="d-flex justify-content-center">
-                                <button type="submit" asp-controller="Appointment" asp-action="Cancel" asp-route-id="@appointment.AppointmentId" class="btn btn-danger btn-sm mr-2">
-                                     Cancel
-                                </button>
-                            </form>
+                            <tr>
+                                <td>@Appointment.DoctorName</td>
+                                <td>@Appointment.DateTime.ToString("g")</td>
+                                <td>@Appointment.Reason</td>
+                                <!-- Status Column -->
+                                <td class="text-center">
+                                    <span class="@(Appointment.Status == Status.Pending ? "text-warning" : Appointment.Status == Status.Confirmed ? "text-success" : "text-danger")">
+                                        @Appointment.Status.ToString()
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @if (Appointment.Status == Status.Pending)
+                                    {
+                                        <form asp-controller="Appointment" method="post">
+                                            <button type="submit" asp-action="Cancel" onsubmit="return confirmDelete();" asp-route-id="@Appointment.AppointmentId" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No actions available</span>
+                                    }
+                                </td>
+                            </tr>
                         }
-                        else
-                        {
-                            <span class="text-muted">No actions available</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Optionally include FontAwesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this Appointment?");
+        }
+    </script>
+}
+
+<style>
+    /* Smaller Add New Appointment Button Styling */
+    .add-new-btn-sm {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        padding: 5px 12px; /* Reduced padding */
+        font-size: 14px; /* Smaller font */
+        border-radius: 5px; /* Slightly smaller border radius */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .add-new-btn-sm i {
+            margin-right: 5px;
+        }
+
+        .add-new-btn-sm:hover {
+            background-color: #e65c00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-new-btn-sm:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.4);
+        }
+</style>

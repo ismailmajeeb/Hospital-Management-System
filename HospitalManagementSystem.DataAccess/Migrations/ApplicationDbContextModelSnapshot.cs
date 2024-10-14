@@ -47,6 +47,9 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -110,6 +113,9 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("MedicalRecord")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
@@ -141,9 +147,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -159,32 +162,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("HospitalManagementSystem.Core.Entities.MedicalRecords", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DoctorID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PatientID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorID");
-
-                    b.HasIndex("PatientID");
-
-                    b.ToTable("MedicalRecords");
-                });
-
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Nurse", b =>
                 {
                     b.Property<int>("Id")
@@ -194,9 +171,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -233,9 +207,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
 
                     b.Property<string>("ChronicDiseases")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -415,24 +386,6 @@ namespace HospitalManagementSystem.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HospitalManagementSystem.Core.Entities.MedicalRecords", b =>
-                {
-                    b.HasOne("HospitalManagementSystem.Core.Entities.Doctor", "Doctor")
-                        .WithMany("MedicalRecords")
-                        .HasForeignKey("DoctorID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("HospitalManagementSystem.Core.Entities.Patient", "Patient")
-                        .WithMany("MedicalRecords")
-                        .HasForeignKey("PatientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Nurse", b =>
                 {
                     b.HasOne("HospitalManagementSystem.Core.Entities.ApplicationUser", "User")
@@ -509,15 +462,11 @@ namespace HospitalManagementSystem.DataAccess.Migrations
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Doctor", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("MedicalRecords");
                 });
 
             modelBuilder.Entity("HospitalManagementSystem.Core.Entities.Patient", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("MedicalRecords");
                 });
 #pragma warning restore 612, 618
         }

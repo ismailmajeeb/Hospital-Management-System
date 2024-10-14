@@ -56,7 +56,8 @@ namespace HospitalManagementSystem.Application.Services
                 DateOfbirth = model.DateOfbirth,
                 UserName = model.UserName,
                 Email = model.Email,
-                PasswordHash = model.Password
+                PasswordHash = model.Password,
+                Gender = Gender.Male,
             };
             var result = await userManager.CreateAsync(newUser, model.Password);
 
@@ -69,7 +70,7 @@ namespace HospitalManagementSystem.Application.Services
             await unitOfWork.Patients.AddAsync(new()
             {
                 User = newUser,
-                Gender = Gender.Male,
+              
                 Name = model.FirstName + " " + model.LastName,
             });
             await ConfirmEmailAysnc(newUser.Email);
@@ -234,6 +235,12 @@ namespace HospitalManagementSystem.Application.Services
                 Name = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                DateOfBirth = user.DateOfbirth,
+                IsEmailConfirmed = user.EmailConfirmed,
+                IsTwoFactorEnabled = user.TwoFactorEnabled,
+                NationalIdOrPassport = user.SSN,
+
             };
         }
         

@@ -23,7 +23,7 @@ namespace HospitalManagementSystem.Application.Models.User
 
         [Required]
         [Display(Name = "Date of birth")]
-        [DateOfBirthValdiation]
+        [DateOfBirth]
         public DateTime DateOfbirth { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
         [Required]

@@ -9,6 +9,5 @@ namespace HospitalManagementSystem.Core.Entities
 
         public ICollection<Patient>? Patients { get; set; }
         public ICollection<Appointment>? Appointments {  get; set; }
-        public ICollection<MedicalRecords>? MedicalRecords { get; set; }
     }
 }

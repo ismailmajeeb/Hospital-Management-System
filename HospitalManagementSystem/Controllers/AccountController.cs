@@ -247,14 +247,6 @@ namespace HospitalManagementSystem.Controllers
         }
 
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Profile()
-        {
-            var model = await accountService.GetProfileDataAsync(User.Identity.Name);
-            return model.IsSuccess ? View(model.Value) : View("Error");
-        }
-
 
     }
 }
