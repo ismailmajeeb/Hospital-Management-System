@@ -63,8 +63,8 @@ namespace HospitalManagementSystem.Controllers
         [Authorize(Roles = SD.Admin)]
         public async Task<IActionResult> Edit(int Id)
         {
-            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id && DateTime.Now < a.DateTime, ["Doctor", "Patient"]);
-            if (null == appointment) return View("Error");
+            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id && DateTime.Now > a.DateTime, ["Doctor", "Patient"]);
+
             return View(new EditAppointmentModel
             {
                 DateTime = appointment.DateTime,

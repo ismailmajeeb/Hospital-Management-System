@@ -17,10 +17,10 @@ namespace HospitalManagementSystem.Controllers
         public async Task<ActionResult> Index()
         {
 
-            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime, includes: ["Doctor", "Patient"]);
+            var appointments = await _context.Appointments.FindAllAsync(a => true, includes: ["Doctor","Patient"]);
             var model = appointments.Select(a => new AppointmentsIndexModel
             {
-
+                
                 AppointmentDate = a.DateTime,
                 DoctorName = a.Doctor.Name,
                 PatientName = a.Patient.Name,
@@ -29,8 +29,8 @@ namespace HospitalManagementSystem.Controllers
             });
             return View(model);
         }
-
-
+        
+        
         [HttpGet]
         [Authorize(Roles = SD.Admin)]
         public IActionResult Create()
@@ -61,19 +61,8 @@ namespace HospitalManagementSystem.Controllers
 
         [HttpGet]
         [Authorize(Roles = SD.Admin)]
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id && DateTime.Now < a.DateTime, ["Doctor", "Patient"]);
-            if (null == appointment) return View("Error");
-            return View(new EditAppointmentModel
-            {
-                DateTime = appointment.DateTime,
-                Id = Id,
-                DoctorName = appointment.Doctor.Name,
-                PatientName = appointment.Patient.Name,
-                Reason = appointment.Reason,
-                Status = appointment.Status,
-            });
 
         }
 
@@ -83,12 +72,8 @@ namespace HospitalManagementSystem.Controllers
         public async Task<IActionResult> Edit(EditAppointmentModel model)
         {
             if (!ModelState.IsValid) return View(model);
-            var appointment = await _context.Appointments.GetByIdAsync(model.Id);
-            if (appointment == null) return View("Error");
-            appointment.DateTime = model.DateTime;
-            appointment.Status = model.Status;
-            appointment.Reason = model.Reason;
-            _context.Appointments.Update(appointment);
+
+            _context.Appointments.Update(obj);
             await _context.CompleteAsync();
             return RedirectToAction("Index");
 
@@ -98,9 +83,9 @@ namespace HospitalManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = $"{SD.Admin},{SD.Patient}")]
-        public async Task<IActionResult> Cancel(int Id)
+        public async Task<IActionResult> Cancel(int id)
         {
-            var appointment = await _context.Appointments.GetByIdAsync(Id);
+            var appointment = await _context.Appointments.GetByIdAsync(id);
             if (appointment == null) return View("Error");
             appointment.Status = Status.Cancelled;
             _context.Appointments.Update(appointment);
@@ -115,9 +100,9 @@ namespace HospitalManagementSystem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = $"{SD.Admin}")]
-        public async Task<IActionResult> Confirm(int Id)
+        public async Task<IActionResult> Confirm(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(a => Id == a.Id && DateTime.Now < a.DateTime);
+            var appointment = await _context.Appointments.GetByIdAsync(id);
             if (appointment == null) return View("Error");
             appointment.Status = Status.Confirmed;
             _context.Appointments.Update(appointment);

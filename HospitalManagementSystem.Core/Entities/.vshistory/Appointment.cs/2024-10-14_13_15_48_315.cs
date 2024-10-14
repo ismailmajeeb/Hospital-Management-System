@@ -16,7 +16,7 @@ namespace HospitalManagementSystem.Core.Entities
         public string Reason { get; set; }
         public Status Status { get; set; }
         public Patient Patient { get; set; }
-        public Doctor Doctor { get; set; }
+        public Doctor  Doctor { get; set; }
     }
     public enum Status
     {

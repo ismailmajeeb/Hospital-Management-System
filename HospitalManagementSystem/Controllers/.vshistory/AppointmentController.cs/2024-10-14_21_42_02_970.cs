@@ -17,7 +17,7 @@ namespace HospitalManagementSystem.Controllers
         public async Task<ActionResult> Index()
         {
 
-            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime, includes: ["Doctor", "Patient"]);
+            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now > a.DateTime, includes: ["Doctor", "Patient"]);
             var model = appointments.Select(a => new AppointmentsIndexModel
             {
 
@@ -63,8 +63,8 @@ namespace HospitalManagementSystem.Controllers
         [Authorize(Roles = SD.Admin)]
         public async Task<IActionResult> Edit(int Id)
         {
-            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id && DateTime.Now < a.DateTime, ["Doctor", "Patient"]);
-            if (null == appointment) return View("Error");
+            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id && DateTime.Now > a.DateTime, ["Doctor", "Patient"]);
+
             return View(new EditAppointmentModel
             {
                 DateTime = appointment.DateTime,
@@ -117,7 +117,7 @@ namespace HospitalManagementSystem.Controllers
         [Authorize(Roles = $"{SD.Admin}")]
         public async Task<IActionResult> Confirm(int Id)
         {
-            var appointment = await _context.Appointments.FindAsync(a => Id == a.Id && DateTime.Now < a.DateTime);
+            var appointment = await _context.Appointments.FindAsync(a => Id == a.Id && DateTime.Now > a.DateTime);
             if (appointment == null) return View("Error");
             appointment.Status = Status.Confirmed;
             _context.Appointments.Update(appointment);

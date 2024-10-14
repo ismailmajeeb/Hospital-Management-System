@@ -1,45 +1,54 @@
-﻿@model Appointment
+﻿@model EditAppointmentModel
 
 @{
-    ViewData["Title"] = "Edit Appointment";
+    ViewBag.Title = "Edit Appointment";
 }
 
-<h1>Edit Appointment</h1>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-calendar-alt"></i> Edit Appointment</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
 
-<h4>Appointment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <input type="hidden" asp-for="Id" />
-             <div class="form-group">
-            <label asp-for="PatientId" class="control-label"></label>
-            <input asp-for="PatientId" class="form-control" />
-            <span asp-validation-for="PatientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-            <label asp-for="DoctorId" class="control-label"></label>
-            <input asp-for="DoctorId" class="form-control" />
-            <span asp-validation-for="DoctorId" class="text-danger"></span>
-            </div> 
-            <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Reason" class="control-label"></label>
-                <textarea asp-for="Reason" class="form-control"></textarea>
-                <span asp-validation-for="Reason" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label for="PatientName"><i class="fas fa-user"></i> Patient Name</label>
+                    <textarea asp-for="PatientName" class="form-control" placeholder="Enter patient name" readonly></textarea>
+                    <span asp-validation-for="PatientName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="DoctorName"><i class="fas fa-user-md"></i> Doctor Name</label>
+                    <textarea asp-for="DoctorName" class="form-control" placeholder="Enter doctor name" readonly></textarea>
+                    <span asp-validation-for="DoctorName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="AppointmentDateTime"><i class="fas fa-clock"></i> Appointment Date & Time</label>
+                    <input asp-for="DateTime" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="DateTime" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Reason"><i class="fas fa-sticky-note"></i> Reason</label>
+                    <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Enter reason for the appointment"></textarea>
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="Status"><i class="fas fa-tasks"></i> Status</label>
+                    <select asp-for="Status" class="form-control" asp-items="@Html.GetEnumSelectList<Status>()"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success mt-3"><i class="fas fa-save"></i> Save</button>
+                <a asp-action="Index" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left"></i> Back</a>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Include FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
