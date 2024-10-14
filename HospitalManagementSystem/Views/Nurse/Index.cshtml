@@ -1,20 +1,20 @@
-﻿@model IEnumerable<PatientsIndexModel>
+@model IEnumerable<NursesIndexModel>
 
 @{
-    ViewData["Title"] = "Patients List";
+    ViewData["Title"] = "Nurses List";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center">Patients List</h2>
+    <h2 class="text-center">Nurses List</h2>
 
     <!-- Add New Patient Button -->
     <div class="container mt-5">
 
         <div class="row justify-content-center">
             <div class="col-md-10 text-right mb-3">
-                <form asp-controller="Patient" asp-action="Create" method="get">
+                <form asp-controller="Nurse" asp-action="Create" method="get">
                     <button type="submit" class="btn add-new-btn-sm">
-                        <i class="fas fa-user-plus"></i> Add Patient
+                        <i class="fas fa-user-plus"></i> Add Nurse
                     </button>
                 </form>
             </div>
@@ -25,22 +25,19 @@
                 <table class="table table-bordered table-striped">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Patient Name</th>
+                            <th scope="col">Nurse Name</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var patient in Model)
+                        @foreach (var Nurse in Model)
                         {
                             <tr>
-                                <td>@patient.Name</td>
+                                <td>@Nurse.Name</td>
                                 <td class="text-center">
-                                    <form asp-controller="Patient" method="post">
-
-                                        <button type="submit" asp-action="ViewMedicalRecords" asp-route-id="@patient.UserId" class="btn btn-primary btn-sm">Medical Records</button>
-                                        <button type="submit" asp-action="ViewAppointments" asp-route-id="@patient.UserId" class="btn btn-info btn-sm">Appointments</button>
-                                        <button type="submit" asp-route-id="@patient.UserId" asp-action="Profile" class="btn btn-success btn-sm">Profile</button>
-                                        <button type="submit" asp-action="Delete" onsubmit="return confirmDelete();" asp-route-id="@patient.UserId" class="btn btn-danger btn-sm">Delete</button>
+                                    <form asp-controller="Nurse" method="post">
+                                        <button type="submit" asp-route-id="@Nurse.UserId" asp-action="Profile" class="btn btn-success btn-sm">Profile</button>
+                                        <button type="submit" asp-action="Delete" onsubmit="return confirmDelete();" asp-route-id="@Nurse.UserId" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 </td>
                             </tr>
