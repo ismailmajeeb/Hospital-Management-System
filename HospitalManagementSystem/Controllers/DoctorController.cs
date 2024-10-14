@@ -1,4 +1,4 @@
-﻿
+
 
 namespace HospitalManagementSystem.Controllers
 {
@@ -19,6 +19,26 @@ namespace HospitalManagementSystem.Controllers
         {
             var temp = await unitOfWork.Doctors.GetAllAsync();
             IEnumerable<DoctorsIndexModel> model = temp.Select(p => new DoctorsIndexModel { UserId = p.UserId, Name = p.Name });
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = SD.Doctor)]
+        public async Task<IActionResult> Dashboard()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == userId);
+
+            var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id, a => a.DateTime, includes: ["Patient"]);
+            
+            var model = new DoctorDashBoardModel
+            {
+                Age = doctor.Age,
+                Gender = user.Gender,
+                Name = doctor.Name,
+                Appointments = Appointments.ToList(),
+            };
             return View(model);
         }
 

@@ -1,128 +1,162 @@
-﻿
-
+using HospitalManagementSystem.DataAccess;
+using HospitalManagementSystem.Application;
+using HospitalManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.Controllers
 {
     public class NurseController : Controller
     {
-        private readonly IUnitOfWork _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
-        public NurseController(IUnitOfWork context, UserManager<ApplicationUser> userManager)
+
+        public NurseController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
-
         }
-        // GET: NurseController
+
+        [HttpGet]
         [Authorize(Roles = $"{SD.Admin}")]
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
-            var nurses = await _context.Nurses.GetAllAsync();
-            return View(nurses);
+            var temp = await _unitOfWork.Nurses.GetAllAsync();
+            IEnumerable<NursesIndexModel> model = temp.Select(p => new NursesIndexModel { UserId = p.UserId, Name = p.Name });
+            return View(model);
         }
 
-
-
+        [HttpGet]
         [Authorize(Roles = SD.Nurse)]
         public async Task<IActionResult> Dashboard()
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var nurse = await _context.Nurses.FindAsync(n => n.UserId == userId);
+            var nurse = await _unitOfWork.Nurses.FindAsync(p => p.UserId == userId);
+
             var model = new NurseDashBoardModel
             {
-                Name = nurse.Name,
                 Age = nurse.Age,
                 Gender = user.Gender,
+                Name = nurse.Name,
+                // Assuming you have similar properties to populate for the nurse
             };
             return View(model);
         }
 
-
-
-        // GET: NurseController/Details/5
-        public async Task<ActionResult> Details(int id)
-        {
-            var nurse = await _context.Nurses.GetByIdAsync(id);
-            if (nurse == null)
-            {
-                return NotFound();
-            }
-            return View(nurse);
-        }
-
-        // GET: NurseController/Create
+        [HttpGet]
         [Authorize(Roles = SD.Admin)]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: NurseController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = SD.Admin)]
-        public async Task<ActionResult> Create(Nurse obj)
+        public async Task<IActionResult> Create(CreateNurseModel model)
         {
-            if (ModelState.IsValid)
-            {
-                await _context.Nurses.AddAsync(obj);
-                await _context.CompleteAsync();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
+            if (!ModelState.IsValid) return View(model);
 
-        // GET: NurseController/Edit/5
-        [Authorize(Roles = SD.Admin)]
-        public async Task<ActionResult> Edit(int id)
-        {
-            var nurse = await _context.Nurses.GetByIdAsync(id);
-            if (nurse == null)
+            var user = new ApplicationUser
             {
-                return NotFound();
-            }
-            return View(nurse);
-        }
-
-        // POST: NurseController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Admin)]
-        public async Task<ActionResult> Edit(Nurse obj)
-        {
-            if (ModelState.IsValid)
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                Address = model.Address,
+                SSN = model.SSN,
+                Gender = model.Gender,
+            };
+            await _userManager.CreateAsync(user);
+            var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
+            await _unitOfWork.Nurses.AddAsync(new Nurse
             {
-                //obj.UpdatedAt = DateTime.Now;
-                _context.Nurses.Update(obj);
-                await _context.CompleteAsync();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
-        }
-
-        // GET: NurseController/Delete/5
-        [Authorize(Roles = SD.Admin)]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var nurse = await _context.Nurses.GetByIdAsync(id);
-            if (nurse == null)
-            {
-                return NotFound();
-            }
-            return View(nurse);
-        }
-
-        // POST: NurseController/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Admin)]
-        public async Task<ActionResult> DeletePost(int id)
-        {
-            var nurse = await _context.Nurses.GetByIdAsync(id);
-            _context.Nurses.Delete(nurse);
-            await _context.CompleteAsync();
+                Age = (year != 0) ? DateTime.Now.Year - year : 0,
+                Name = model.FirstName + " " + model.LastName,
+                User = user,
+            });
+            await _unitOfWork.CompleteAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = SD.Admin)]
+        public async Task<IActionResult> Edit(string Id = null)
+        {
+            if (Id == null)
+            {
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+            var user = await _userManager.FindByIdAsync(Id);
+            if (user == null) return View("Error");
+
+            var nurse = await _unitOfWork.Nurses.FindAsync(d => d.UserId == Id);
+            if (nurse == null) return View("Error");
+
+            var model = new EditNurseModel
+            {
+                FirstName = nurse.Name.Split(' ')?.FirstOrDefault(),
+                LastName = nurse.Name.Split(' ')?.LastOrDefault(),
+                Address = user.Address,
+                Email = user.Email,
+                SSN = user.SSN,
+                PhoneNumber = user.PhoneNumber,
+                UserName = user.UserName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Admin)]
+        public async Task<IActionResult> Edit(EditNurseModel model)
+        {
+            if (!ModelState.IsValid) return View("Error");
+            var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
+            var nurse = new Nurse()
+            {
+                Name = model.FirstName + " " + model.LastName,
+                Age = (year != 0) ? DateTime.Now.Year - year : 0,
+            };
+            if (nurse == null) return View("Error");
+            _unitOfWork.Nurses.Update(nurse);
+            await _unitOfWork.CompleteAsync();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Admin)]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            var user = await _userManager.FindByIdAsync(Id);
+            if (user == null) return View("Error");
+            await _userManager.DeleteAsync(user);
+
+            var temp = await _unitOfWork.Nurses.GetAllAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = SD.Admin)]
+        public async Task<IActionResult> Profile(int Id)
+        {
+            var nurse = await _unitOfWork.Nurses.GetByIdAsync(Id);
+            if (nurse == null) return View("Error");
+
+            var model = new NurseProfileModel
+            {
+                Name = nurse.Name,
+            };
+
+            return View(model);
         }
     }
 }
