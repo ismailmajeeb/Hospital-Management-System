@@ -1,0 +1,55 @@
+﻿
+@model MedicalRecordDetailsModel
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-file-medical-alt"></i> Medical Record Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-notes-medical"></i> Description:</h6>
+                    <p class="text-muted">@Model.Description</p>
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="fas fa-stethoscope"></i> Diagnosis:</h6>
+                    <p class="text-muted">@Model.Diagnosis</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-pills"></i> Treatment:</h6>
+                    <p class="text-muted">@Model.Treatment</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-user-md"></i> Doctor Name:</h6>
+                    <p class="text-muted">@Model.DoctorName }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="fas fa-user-injured"></i> Patient Name:</h6>
+                    <p class="text-muted">@Model.PatientName</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <h6><i class="fas fa-calendar-alt"></i>Appointment Date</h6>
+                <p class="text-muted">@Model.AppointmentDateTime</p>
+
+
+            </div>
+
+
+            <div class="d-flex justify-content-end">
+                <a href="/edit/record/{{ AppointmentId }}" class="btn btn-warning me-2">
+                    <i class="fas fa-edit"></i> Edit Record
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

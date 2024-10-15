@@ -49,8 +49,15 @@
                                 <td class="text-center">
                                     @if (Appointment.Status == Status.Pending)
                                     {
-                                        <form asp-controller="Appointment" asp-route-id="@Appointment.AppointmentId"  asp-action="Cancel" method="post">
-                                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+
+                                        <form method="post">
+
+                                            @if (User.IsInRole(SD.Admin))
+                                            {
+                                                <button type="submit" asp-controller="Appointment"  asp-action="Confirm" asp-route-id="@Appointment.AppointmentId" class="btn btn-success btn-sm">Confirm</button>
+                                                <a type="submit" asp-controller="Appointment" asp-action="Edit" asp-route-id="@Appointment.AppointmentId" class="btn btn-primary btn-sm">Edit</a>
+                                            }
+                                            <button type="submit" asp-controller="Appointment" asp-action="Cancel" asp-route-id="@Appointment.AppointmentId" class="btn btn-danger btn-sm">Cancel</button>
                                         </form>
                                     }
                                     else

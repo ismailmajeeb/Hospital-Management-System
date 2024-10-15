@@ -71,10 +71,10 @@ namespace HospitalManagementSystem.Controllers
                 SSN = model.SSN,
                 PhoneNumber = model.PhoneNumber,
                 Gender = model.Gender,
-                
+
 
             };
-            var result = await userManager.CreateAsync(user,"Patient123");
+            var result = await userManager.CreateAsync(user, "Patient123");
             foreach (var e in result.Errors)
                 ModelState.AddModelError("", e.Description);
             if (!result.Succeeded) return View(model);
@@ -121,7 +121,7 @@ namespace HospitalManagementSystem.Controllers
             {
                 Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
-        
+
             var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == Id);
             if (patient == null) return View("Error");
             var user = await userManager.FindByIdAsync(Id);
@@ -162,11 +162,11 @@ namespace HospitalManagementSystem.Controllers
             patient.Allergies = model.Allergies;
             patient.ChronicDiseases = model.ChronicDiseases;
             patient.BloodGroup = model.BloodGroup;
+            patient.Name = model.FirstName + " " + model.LastName;
+
             if (patient == null) return View("Error");
             unitOfWork.Patients.Update(patient);
             user.UserName = model.UserName;
-            model.FirstName = model.FirstName;
-            model.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
             user.Email = model.Email;
             user.NormalizedEmail = model.Email.ToUpper();
@@ -176,14 +176,14 @@ namespace HospitalManagementSystem.Controllers
             user.DateOfbirth = model.DateOfBirth;
             user.SSN = model.SSN;
             user.Gender = model.Gender;
-            
+
 
             await userManager.UpdateAsync(user);
 
             await unitOfWork.CompleteAsync();
             if (User.IsInRole(SD.Patient))
                 return RedirectToAction("Profile", "Patient");
-            return RedirectToAction("Index","Patient");
+            return RedirectToAction("Index", "Patient");
         }
 
         [HttpGet]
@@ -266,6 +266,28 @@ namespace HospitalManagementSystem.Controllers
             await unitOfWork.CompleteAsync();
 
             return RedirectToAction("Dashboard");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = $"{SD.Doctor},{SD.Nurse}")]
+        public async Task<IActionResult> MedicalRecords(string Id = null)
+        {
+            if (Id == null)
+            {
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+            var user = await userManager.FindByIdAsync(Id);
+            var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == Id);
+
+            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.PatientId == patient.Id, includes: ["Doctor", "Patient"]);
+            var model = temp.Select(r => new PatientMedicalRecordIndexModel
+            {
+                DoctorName = r.Doctor.Name,
+                AppointmentDateTime = r.Appointment.DateTime,
+                MedicalRecordId = r.Id,
+
+            });
+            return View(model);
         }
     }
 }

@@ -10,7 +10,7 @@ public class OneWordAttribute : ValidationAttribute
         {
             string input = value.ToString();
             // Use a regex to check if it's a single word
-            if (!Regex.IsMatch(input, @"^\S+$")) // \S+ means one or more non-whitespace characters
+            if (!Regex.IsMatch(input, @"^\S+\s*$")) // \S+ means one or more non-whitespace characters
             {
                 return new ValidationResult("The field must contain exactly one word.");
             }

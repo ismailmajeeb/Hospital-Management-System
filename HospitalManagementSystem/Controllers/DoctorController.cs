@@ -31,14 +31,15 @@ namespace HospitalManagementSystem.Controllers
             var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == userId);
 
             var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id, a => a.DateTime, includes: ["Patient"]);
-           /* 
+           /*
             var model = new DoctorDashBoardModel
             {
                 Age = doctor.Age,
                 Gender = user.Gender,
                 Name = doctor.Name,
                 Appointments = Appointments.ToList(),
-            };*/
+            };
+           */
             return View();
         }
 
@@ -66,7 +67,7 @@ namespace HospitalManagementSystem.Controllers
                 SSN = model.SSN,
                 Gender = model.Gender,
             };
-            await userManager.CreateAsync(user);
+            await userManager.CreateAsync(user,"Doctor123");
             var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
             await unitOfWork.Doctors.AddAsync(new()
             {
@@ -75,6 +76,7 @@ namespace HospitalManagementSystem.Controllers
                 User = user,
                 
             });
+            await userManager.AddToRoleAsync(user, SD.Doctor);
             await unitOfWork.CompleteAsync();
             return RedirectToAction("Index");
         }
@@ -154,6 +156,28 @@ namespace HospitalManagementSystem.Controllers
                 Appointments = doctor.Appointments?.ToList(),
             };
 
+            return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = SD.Doctor)]
+        public async Task<IActionResult> MedicalRecords(string Id = null)
+        {
+            if (Id == null)
+            {
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+            var user = await userManager.FindByIdAsync(Id);
+            var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == Id);
+
+            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.DoctorId == doctor.Id, includes: ["Patient", "Doctor"]);
+            var model = temp.Select(r => new DoctorMedicalRecordIndexModel
+            {
+                PatientName = r.Patient.Name,
+                AppointmentDateTime = r.Appointment.DateTime,
+                MedicalRecordId = r.Id,
+
+            });
             return View(model);
         }
     }

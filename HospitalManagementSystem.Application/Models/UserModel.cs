@@ -11,14 +11,6 @@ namespace HospitalManagementSystem.Application.Models
     {
         public string? Id { get; set; }
         
-        [Display(Name = "First Name")]
-        [OneWord]
-        public string FirstName { get; set; }
-        
-        [Display(Name = "Last Name")]
-        [OneWord]
-        public string LastName { get; set; }
-        
         public string Address { get; set; }
         
         [Display(Name = "National Id Or Passpart")]

@@ -1,20 +1,10 @@
-using HospitalManagementSystem.DataAccess;
-using HospitalManagementSystem.Application;
-using HospitalManagementSystem.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 namespace HospitalManagementSystem.Controllers
 {
     public class NurseController : Controller
     {
-        /*
+        
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -74,7 +64,7 @@ namespace HospitalManagementSystem.Controllers
                 SSN = model.SSN,
                 Gender = model.Gender,
             };
-            await _userManager.CreateAsync(user);
+            await _userManager.CreateAsync(user,"Nurse123");
             var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
             await _unitOfWork.Nurses.AddAsync(new Nurse
             {
@@ -82,6 +72,7 @@ namespace HospitalManagementSystem.Controllers
                 Name = model.FirstName + " " + model.LastName,
                 User = user,
             });
+            await _userManager.AddToRoleAsync(user, SD.Nurse);
             await _unitOfWork.CompleteAsync();
             return RedirectToAction("Index");
         }
@@ -159,6 +150,6 @@ namespace HospitalManagementSystem.Controllers
 
             return View(model);
         }
-        */
+        
     }
 }
