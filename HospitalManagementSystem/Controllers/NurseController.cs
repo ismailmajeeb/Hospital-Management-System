@@ -1,5 +1,8 @@
 
 
+using HospitalManagementSystem.DataAccess;
+using Microsoft.AspNetCore.Identity;
+
 namespace HospitalManagementSystem.Controllers
 {
     public class NurseController : Controller
@@ -137,19 +140,26 @@ namespace HospitalManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = SD.Admin)]
-        public async Task<IActionResult> Profile(int Id)
+        [Authorize(Roles = $"{SD.Nurse},{SD.Admin}")]
+        public async Task<IActionResult> Profile()
         {
-            var nurse = await _unitOfWork.Nurses.GetByIdAsync(Id);
-            if (nurse == null) return View("Error");
-
-            var model = new NurseProfileModel
+            var nurse = await _unitOfWork.Nurses.FindAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || nurse == null) return View("Error");
+            return View(new NurseProfileModel()
             {
                 Name = nurse.Name,
-            };
-
-            return View(model);
+                Address = user.Address,
+                Email = user.Email,
+                IsEmailConfirmed = user.EmailConfirmed,
+                NationalIdOrPassport = user.SSN,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                IsTwoFactorEnabled = user.TwoFactorEnabled,
+                DateOfBirth = user.DateOfbirth,
+            });
         }
+    
         
     }
 }
