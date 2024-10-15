@@ -74,7 +74,7 @@ namespace HospitalManagementSystem.Controllers
                 
 
             };
-            var result = await userManager.CreateAsync(user);
+            var result = await userManager.CreateAsync(user,"Patient123");
             foreach (var e in result.Errors)
                 ModelState.AddModelError("", e.Description);
             if (!result.Succeeded) return View(model);
@@ -90,7 +90,7 @@ namespace HospitalManagementSystem.Controllers
                 BloodGroup = model.BloodGroup,
                 ChronicDiseases = model.ChronicDiseases,
             });
-
+            await userManager.AddToRoleAsync(user, SD.Patient);
             await unitOfWork.CompleteAsync();
 
             var temp = await unitOfWork.Patients.GetAllAsync();
@@ -162,16 +162,21 @@ namespace HospitalManagementSystem.Controllers
             patient.Allergies = model.Allergies;
             patient.ChronicDiseases = model.ChronicDiseases;
             patient.BloodGroup = model.BloodGroup;
-
             if (patient == null) return View("Error");
             unitOfWork.Patients.Update(patient);
             user.UserName = model.UserName;
+            model.FirstName = model.FirstName;
+            model.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
             user.Email = model.Email;
+            user.NormalizedEmail = model.Email.ToUpper();
+            user.NormalizedUserName = model.UserName.ToUpper();
             user.Address = model.Address;
             user.Gender = model.Gender;
             user.DateOfbirth = model.DateOfBirth;
             user.SSN = model.SSN;
+            user.Gender = model.Gender;
+            
 
             await userManager.UpdateAsync(user);
 

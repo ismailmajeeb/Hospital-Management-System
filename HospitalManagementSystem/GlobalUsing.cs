@@ -18,6 +18,7 @@ global using HospitalManagementSystem.Application.Models.Appointments;
 global using HospitalManagementSystem.Application.Models.Doctors;
 global using HospitalManagementSystem.Application.Models.Nurses;
 global using HospitalManagementSystem.Application.Models.Admins;
+global using HospitalManagementSystem.Application.Models.MedicalRecords;
 
 
 

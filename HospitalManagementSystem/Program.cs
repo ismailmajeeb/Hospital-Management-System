@@ -23,6 +23,7 @@ namespace HospitalManagementSystem
 
             builder.Services.Configure<IdentityOptions>(opt =>
             {
+                opt.User.RequireUniqueEmail = true;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireNonAlphanumeric = false;

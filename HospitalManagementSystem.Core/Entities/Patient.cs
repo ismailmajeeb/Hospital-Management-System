@@ -10,6 +10,7 @@
         public string? Allergies { get; set; }
 
         public ICollection<Doctor>? Doctors { get; set; }
+        public ICollection<MedicalRecord>? MedicalRecords { get; set; }
         public ICollection<Appointment>? Appointments { get; set; }
 
 

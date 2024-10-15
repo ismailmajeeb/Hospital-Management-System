@@ -31,15 +31,15 @@ namespace HospitalManagementSystem.Controllers
             var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == userId);
 
             var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id, a => a.DateTime, includes: ["Patient"]);
-            
+           /* 
             var model = new DoctorDashBoardModel
             {
                 Age = doctor.Age,
                 Gender = user.Gender,
                 Name = doctor.Name,
                 Appointments = Appointments.ToList(),
-            };
-            return View(model);
+            };*/
+            return View();
         }
 
         [HttpGet]

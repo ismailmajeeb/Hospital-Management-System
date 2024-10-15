@@ -59,6 +59,8 @@ namespace HospitalManagementSystem.Application.Services
                 PasswordHash = model.Password,
                 Gender = Gender.Male,
             };
+        
+
             var result = await userManager.CreateAsync(newUser, model.Password);
 
             if (!result.Succeeded)

@@ -27,14 +27,17 @@ namespace HospitalManagementSystem.Application.Models
       
         [DateOfBirth]
         [Display(Name = "Date of Birth")]
+        [Required]
         public DateTime? DateOfBirth { get; set; }
         
         [Display(Name = "User Name")]
         [Username]
+        [UniqueUsername]
         public string UserName { get; set; }
         
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
+        [UniqueEmail]
         public string Email { get; set; }
         
         public string PhoneNumber { get; set; }

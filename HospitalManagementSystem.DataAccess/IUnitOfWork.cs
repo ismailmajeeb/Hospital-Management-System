@@ -14,6 +14,7 @@ namespace HospitalManagementSystem.DataAccess
         IDoctorRepository Doctors { get; }
         IPatientRepository Patients { get; }
         IAppointmentRepository Appointments { get; }
+        IMedicalRecordRepository MedicalRecords { get; }
 
         Task<int> CompleteAsync();
     }

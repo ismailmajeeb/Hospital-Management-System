@@ -14,6 +14,7 @@ namespace HospitalManagementSystem.Controllers
 {
     public class NurseController : Controller
     {
+        /*
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -158,5 +159,6 @@ namespace HospitalManagementSystem.Controllers
 
             return View(model);
         }
+        */
     }
 }

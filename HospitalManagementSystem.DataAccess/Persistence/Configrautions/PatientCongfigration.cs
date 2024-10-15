@@ -9,7 +9,9 @@ namespace HospitalManagementSystem.DataAccess.Persistence.Configrautions
     {
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
-
+            builder.HasMany(d => d.MedicalRecords).WithOne(m => m.Patient)
+                   .HasForeignKey(m => m.PatientId)
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

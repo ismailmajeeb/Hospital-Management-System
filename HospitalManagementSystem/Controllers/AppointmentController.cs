@@ -13,11 +13,12 @@ namespace HospitalManagementSystem.Controllers
             _context = context;
             this.userManager = userManager;
         }
-        // GET: AppointmentController
+        [HttpGet]
+        [Authorize(Roles = SD.Admin)]
         public async Task<ActionResult> Index()
         {
 
-            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime, includes: ["Doctor", "Patient"]);
+            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime,a=>a.DateTime, includes: ["Doctor", "Patient"]);
             var model = appointments.Select(a => new AppointmentsIndexModel
             {
 

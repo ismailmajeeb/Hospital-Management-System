@@ -18,6 +18,8 @@ namespace HospitalManagementSystem.DataAccess
         public IDoctorRepository Doctors{ get; private set; }
         public INurseRepository Nurses{ get; private set; }
         public IAppointmentRepository Appointments { get; private set; }
+        public IMedicalRecordRepository MedicalRecords { get; private set; }
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -27,6 +29,7 @@ namespace HospitalManagementSystem.DataAccess
             Doctors = new DoctorRepository(_context);
             Nurses = new NurseRepository(_context);
             Appointments = new AppointmentRepository(_context);
+            MedicalRecords = new MedicalRecordRepository(_context);
         }
         
         public async Task<int> CompleteAsync()
