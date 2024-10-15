@@ -1,5 +1,8 @@
 
 
+using HospitalManagementSystem.Core.Entities;
+using System.Numerics;
+
 namespace HospitalManagementSystem.Controllers
 {
     public class DoctorController : Controller
@@ -31,7 +34,7 @@ namespace HospitalManagementSystem.Controllers
             var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == userId);
 
             var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id, a => a.DateTime, includes: ["Patient"]);
-           /*
+           
             var model = new DoctorDashBoardModel
             {
                 Age = doctor.Age,
@@ -39,8 +42,8 @@ namespace HospitalManagementSystem.Controllers
                 Name = doctor.Name,
                 Appointments = Appointments.ToList(),
             };
-           */
-            return View();
+           
+            return View(model);
         }
 
         [HttpGet]
@@ -143,22 +146,27 @@ namespace HospitalManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = SD.Admin)]
-        public async Task<IActionResult> Profile(int Id)
+        [Authorize(Roles = SD.Doctor)]
+        public async Task<IActionResult> Profile()
         {
-            var doctor = await unitOfWork.Doctors.GetByIdAsync(Id);
-            if (doctor == null) return View("Error");
 
-            var model = new DoctorProfileModel
+            var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await userManager.GetUserAsync(User);
+            if (user == null || doctor == null) return View("Error");
+            return View(new DoctorProfileModel()
             {
                 Name = doctor.Name,
-                Patients = doctor.Patients.ToList(),
-                Appointments = doctor.Appointments?.ToList(),
-            };
-
-            return View(model);
+                Address = user.Address,
+                Email = user.Email,
+                IsEmailConfirmed = user.EmailConfirmed,
+                NationalIdOrPassport = user.SSN,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                IsTwoFactorEnabled = user.TwoFactorEnabled,
+                DateOfBirth = user.DateOfbirth,
+            });
         }
-
+        
         [HttpGet]
         [Authorize(Roles = SD.Doctor)]
         public async Task<IActionResult> MedicalRecords(string Id = null)
