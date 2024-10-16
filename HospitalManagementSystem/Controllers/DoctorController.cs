@@ -1,7 +1,6 @@
 
 
-using HospitalManagementSystem.Core.Entities;
-using System.Numerics;
+using HospitalManagementSystem.Application.Models.Doctors;
 
 namespace HospitalManagementSystem.Controllers
 {
@@ -21,7 +20,7 @@ namespace HospitalManagementSystem.Controllers
         public async Task<IActionResult> Index()
         {
             var temp = await unitOfWork.Doctors.GetAllAsync();
-            IEnumerable<DoctorsIndexModel> model = temp.Select(p => new DoctorsIndexModel { UserId = p.UserId, Name = p.Name });
+            IEnumerable<DoctorIndexModel> model = temp.Select(p => new DoctorIndexModel { UserId = p.UserId, Name = p.Name });
             return View(model);
         }
 
@@ -33,16 +32,20 @@ namespace HospitalManagementSystem.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == userId);
 
-            var Appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id, a => a.DateTime, includes: ["Patient"]);
-           
+            var appointments = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == doctor.Id && a.Status == Status.Confirmed, a => a.DateTime, includes: ["Patient"]);
+            var appointment = appointments.FirstOrDefault();
+            if (doctor == null || user == null)
+                return View("Error");
+
             var model = new DoctorDashBoardModel
             {
                 Age = doctor.Age,
                 Gender = user.Gender,
-                Name = doctor.Name,
-                Appointments = Appointments.ToList(),
+                DoctorName = doctor.Name,
+                AppointmentDateTime = appointment?.DateTime,
+                AppointmentPatientName = appointment?.Patient?.Name
             };
-           
+
             return View(model);
         }
 
@@ -70,14 +73,14 @@ namespace HospitalManagementSystem.Controllers
                 SSN = model.SSN,
                 Gender = model.Gender,
             };
-            await userManager.CreateAsync(user,"Doctor123");
+            await userManager.CreateAsync(user, "Doctor123");
             var year = (model.DateOfBirth.HasValue) ? model.DateOfBirth.Value.Year : default;
             await unitOfWork.Doctors.AddAsync(new()
             {
                 Age = (year != 0) ? DateTime.Now.Year - year : 0,
                 Name = model.FirstName + " " + model.LastName,
                 User = user,
-                
+
             });
             await userManager.AddToRoleAsync(user, SD.Doctor);
             await unitOfWork.CompleteAsync();
@@ -85,7 +88,7 @@ namespace HospitalManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = SD.Admin)]
+        [Authorize(Roles = $"{SD.Admin},{SD.Doctor}")]
         public async Task<IActionResult> Edit(string Id = null)
         {
             if (Id == null)
@@ -95,7 +98,7 @@ namespace HospitalManagementSystem.Controllers
             var user = await userManager.FindByIdAsync(Id);
             if (user == null) return View("Error");
 
-            var doctor = await unitOfWork.Doctors.FindAsync(d=>d.UserId == Id);
+            var doctor = await unitOfWork.Doctors.FindAsync(d => d.UserId == Id);
             if (doctor == null) return View("Error");
 
             var model = new EditDoctorModel
@@ -115,7 +118,7 @@ namespace HospitalManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Admin)]
+        [Authorize(Roles = $"{SD.Admin},{SD.Doctor}")]
         public async Task<IActionResult> Edit(EditDoctorModel model)
         {
             if (!ModelState.IsValid) return View("Error");
@@ -166,9 +169,39 @@ namespace HospitalManagementSystem.Controllers
                 DateOfBirth = user.DateOfbirth,
             });
         }
-        
+
         [HttpGet]
-        [Authorize(Roles = SD.Doctor)]
+        [Authorize(Roles = $"{SD.Admin},{SD.Doctor}")]
+        public async Task<IActionResult> Appointments(string Id = null)
+        {
+            if (Id == null)
+                Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var patient = await unitOfWork.Doctors.FindAsync(x => x.UserId == Id);
+            if (patient == null) return View("Error");
+            var temp = await unitOfWork.Appointments.FindAllAsync(a => a.DoctorId == patient.Id && a.Status == Status.Confirmed, ["Patient"]);
+            if (temp == null) return View(new List<PatientAppointmentsModel>());
+
+            IEnumerable<DoctorAppointmentsModel> model = temp.Select(a => new DoctorAppointmentsModel
+            {
+
+                AppointmentId = a.Id,
+                DateTime = a.DateTime,
+                Reason = a.Reason,
+                Status = a.Status,
+                PatientName = a.Patient?.Name,
+            });
+            return View(model);
+
+        }
+
+
+
+
+
+
+        [HttpGet]
+        [Authorize(Roles = $"{SD.Doctor},{SD.Admin}")]
         public async Task<IActionResult> MedicalRecords(string Id = null)
         {
             if (Id == null)
@@ -178,7 +211,7 @@ namespace HospitalManagementSystem.Controllers
             var user = await userManager.FindByIdAsync(Id);
             var doctor = await unitOfWork.Doctors.FindAsync(p => p.UserId == Id);
 
-            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.DoctorId == doctor.Id, includes: ["Patient", "Doctor"]);
+            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.DoctorId == doctor.Id, includes: ["Patient", "Appointment"]);
             var model = temp.Select(r => new DoctorMedicalRecordIndexModel
             {
                 PatientName = r.Patient.Name,

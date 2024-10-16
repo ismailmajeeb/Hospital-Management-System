@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.Application.Models.Nurses
 {
-    public class NurseProfileModel
+    public class NurseProfileModel : ProfileModel
     {
-        public string Name { get; set; }
     }
 }

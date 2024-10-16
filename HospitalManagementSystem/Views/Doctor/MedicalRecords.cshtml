@@ -1,0 +1,74 @@
+﻿@model IEnumerable<DoctorMedicalRecordIndexModel>
+
+@{
+    ViewData["Title"] = "MedicalRecord List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">MedicalReord List</h2>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Patient Name</th>
+                            <th scope="col">Date of Appointment</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var MedicalReord in Model)
+                        {
+                            <tr>
+                                <td>@MedicalReord.PatientName</td>
+                                <td>@MedicalReord.AppointmentDateTime.ToString("g")</td>
+
+                                <td class="text-center">
+                                        <a type="submit" asp-action="details" asp-controller="MedicalRecord" asp-route-id="@MedicalReord.MedicalRecordId" class="btn btn-primary btn-sm">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this MedicalReord?");
+        }
+    </script>
+}
+
+<style>
+    /* Smaller Add New MedicalReord Button Styling */
+    .add-new-btn-sm {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        padding: 5px 12px; /* Reduced padding */
+        font-size: 14px; /* Smaller font */
+        border-radius: 5px; /* Slightly smaller border radius */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .add-new-btn-sm i {
+            margin-right: 5px;
+        }
+
+        .add-new-btn-sm:hover {
+            background-color: #e65c00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-new-btn-sm:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.4);
+        }
+</style>

@@ -222,10 +222,12 @@ namespace HospitalManagementSystem.Controllers
 
             var patient = await unitOfWork.Patients.FindAsync(x => x.UserId == Id);
             if (patient == null) return View("Error");
-            var temp = await unitOfWork.Appointments.FindAllAsync(a => a.PatientId == patient.Id, ["Doctor"]);
+            var temp = await unitOfWork.Appointments.FindAllAsync(a => a.PatientId == patient.Id && a.DateTime > DateTime.UtcNow,a=> a.DateTime,includes:["Doctor"]);
             if (temp == null) return View(new List<PatientAppointmentsModel>());
+            
             IEnumerable<PatientAppointmentsModel> model = temp.Select(a => new PatientAppointmentsModel
             {
+
                 AppointmentId = a.Id,
                 DateTime = a.DateTime,
                 Reason = a.Reason,
@@ -241,7 +243,7 @@ namespace HospitalManagementSystem.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = $"{SD.Admin},{SD.Patient}")]
+        [Authorize(Roles = $"{SD.Patient}")]
         public IActionResult MakeAppointment()
         {
             return View();
@@ -269,7 +271,7 @@ namespace HospitalManagementSystem.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = $"{SD.Doctor},{SD.Nurse}")]
+        [Authorize(Roles = $"{SD.Doctor},{SD.Nurse},{SD.Admin},{SD.Patient}")]
         public async Task<IActionResult> MedicalRecords(string Id = null)
         {
             if (Id == null)
@@ -279,7 +281,7 @@ namespace HospitalManagementSystem.Controllers
             var user = await userManager.FindByIdAsync(Id);
             var patient = await unitOfWork.Patients.FindAsync(p => p.UserId == Id);
 
-            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.PatientId == patient.Id, includes: ["Doctor", "Patient"]);
+            var temp = await unitOfWork.MedicalRecords.FindAllAsync(r => r.PatientId == patient.Id, includes: ["Doctor", "Appointment"]);
             var model = temp.Select(r => new PatientMedicalRecordIndexModel
             {
                 DoctorName = r.Doctor.Name,

@@ -14,7 +14,7 @@
         <div class="card-body">
             <form asp-action="Edit" method="post">
                 @* Hidden field for the Id *@
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="MedicalRecordId" />
 
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -64,8 +64,8 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fas fa-save"></i> Save Changes
                     </button>
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back to List
+                    <a asp-action="Details" asp-route-id ="@Model.MedicalRecordId" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Details
                     </a>
                 </div>
             </form>

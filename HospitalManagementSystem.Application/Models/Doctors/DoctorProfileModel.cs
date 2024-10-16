@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManagementSystem.Application.Models.Doctors
 {
-    public class DoctorProfileModel
+    public class DoctorProfileModel: ProfileModel
     {
         public string Name { get; set; }
         public List<Patient>? Patients { get; set; }

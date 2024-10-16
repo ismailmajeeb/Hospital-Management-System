@@ -1,0 +1,54 @@
+﻿ @model DoctorDashBoardModel
+
+    <div class="container my-5">
+        <h2 class="text-center">Doctor Dashboard</h2>
+
+            <!-- Doctor Information -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card p-4 text-center">
+                        <div class="icon-circle">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h5 class="card-title">Doctor Information</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Name:</strong> @Model.Name</li>
+                            <li><strong>Age:</strong> @Model.Age</li>
+                            <li><strong>Gender:</strong> @Model.Gender</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Appointments Section -->
+                <div class="col-md-8">
+                    <div class="card p-4 text-center">
+                        <div class="icon-circle">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <h5 class="card-title">Appointments</h5>
+                        <ul class="list-unstyled mb-0">
+                            @if (Model.Appointments != null && Model.Appointments.Any())
+                            {
+                                @foreach (var appointment in Model.Appointments)
+                                {
+                                    <li><strong>Date:</strong> @appointment.DateTime.ToShortDateString()</li>
+                                    <li><strong>Time:</strong> @appointment.DateTime.ToShortTimeString()</li>
+                                    <li><strong>Patient:</strong> @appointment.Patient</li>
+                                    <a href="@Url.Action("Details", "Appointment", new { id = appointment.Id })" class="btn btn-outline-custom mt-2">View Details</a>
+
+                                }
+                            }
+                            else
+                            {
+                                <li>No appointments available.</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+      
+    </div>
+
+    <!-- Bootstrap 5 JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

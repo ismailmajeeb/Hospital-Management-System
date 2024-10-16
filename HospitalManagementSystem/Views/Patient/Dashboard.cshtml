@@ -138,7 +138,7 @@
                     <li><strong>Allergies:</strong> @Model.Allergies</li>
                 </ul>
                 <!-- Button to view all medical records -->
-                <form asp-action="MedicalRecords" asp-controller="Patient" method="post">
+                <form asp-action="MedicalRecords" asp-controller="Patient" method="get">
                     <input type="submit" class="btn btn-custom mt-3" value="View All Medical Records" />
                 </form>
             </div>

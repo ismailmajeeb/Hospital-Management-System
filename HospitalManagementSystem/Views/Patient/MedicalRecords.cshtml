@@ -1,35 +1,20 @@
 ﻿@model IEnumerable<PatientMedicalRecordIndexModel>
 
 @{
-    ViewData["Title"] = "MedicalReord List";
+    ViewData["Title"] = "MedicalRecord List";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center">MedicalReord List</h2>
+    <h2 class="text-center">MedicalRecord List</h2>
 
-    <!-- Add New MedicalReord Button -->
     <div class="container mt-5">
-
-        <div class="row justify-content-center">
-            <div class="col-md-10 text-right mb-3">
-                <form asp-controller="MedicalReord" asp-action="Create" method="get">
-                    <button type="submit" class="btn add-new-btn-sm">
-                        <i class="fas fa-user-plus"></i> Add MedicalReord
-                    </button>
-                </form>
-            </div>
-        </div>
-
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <table class="table table-bordered table-striped">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Doctor Name</th>
-                            <th scope="col">Patient Name</th>
-                            <th scope="col"> Date</th>
-                            <th scope="col"> Status</th>
-
+                            <th scope="col">Date of Appointment</th>
                             <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -41,9 +26,7 @@
                                 <td>@MedicalReord.AppointmentDateTime.ToString("g")</td>
 
                                 <td class="text-center">
-                                    <form asp-controller="MedicalReord" method="post">
-                                        <button type="submit" asp-action="index" asp-route-id="@MedicalReord.MedicalRecordId" class="btn btn-success btn-sm">View Medical record details</button>
-                                    </form>
+                                    <a type="submit" asp-action="details" asp-controller="MedicalRecord" asp-route-id="@MedicalReord.MedicalRecordId" class="btn btn-primary btn-sm">Details</a>
                                 </td>
                             </tr>
                         }

@@ -1,0 +1,174 @@
+﻿
+@model AppointmentDetailsModel
+<style>
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        max-width: 700px; /* Making the card narrower */
+        margin: 0 auto; /* Centering the card */
+    }
+
+    .card-header {
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        background-color: #007bff; /* Custom Blue */
+    }
+
+    .card-body h5 {
+        font-size: 1.2rem;
+        color: #444;
+        font-weight: bold;
+    }
+
+    .card-body p {
+        font-size: 1.1rem;
+        color: #666;
+    }
+
+    .icon-box {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background-color: #f0f2f5;
+        border-radius: 50%;
+        margin-right: 10px;
+        font-size: 1.3rem;
+        color: #007bff;
+    }
+
+    .info-section {
+        padding: 15px;
+        background-color: #f9f9fb;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+        .info-section:hover {
+            background-color: #f1f1f3;
+            transform: translateY(-2px);
+        }
+
+    .card-footer {
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .btn-custom {
+        min-width: 140px;
+        transition: all 0.3s ease;
+        font-size: 1.05rem;
+        padding: 10px 15px;
+    }
+
+        .btn-custom:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+<body>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-white text-center">
+                <h4><i class="fas fa-calendar-alt"></i> Appointment Details</h4>
+            </div>
+            <div class="card-body">
+                <!-- Patient Name and Doctor Name -->
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                Patient Name:
+                            </h5>
+                            <p class="ms-4">@Model.PatientName</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-user-md"></i>
+                                </span>
+                                Doctor Name:
+                            </h5>
+                            <p class="ms-4">@Model.DoctorName</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointment Date & Time and Reason -->
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-clock"></i>
+                                </span>
+                                Appointment Date & Time:
+                            </h5>
+                            <p class="ms-4">@Model.DateTime.ToString("f")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </span>
+                                Reason:
+                            </h5>
+                            <p class="ms-4">@Model.Reason</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status and Medical Record -->
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                                Status:
+                            </h5>
+                            <p class="ms-4">@Model.Status</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-file-medical"></i>
+                                </span>
+                                Medical Record Created:
+                            </h5>
+                            <p class="ms-4">
+                                @(Model.IsMedicalRecordCreated ? "Yes" : "No")
+                                <span class="ms-2">
+                                    @(Model.MedicalRecordId.HasValue ? $"(Record ID: {Model.MedicalRecordId.Value})" : "")
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons Section (Styled Outline Buttons) -->
+            <div class="card-footer d-flex justify-content-end p-3">
+                <a href="@Url.Action("Edit", "Appointments", new { id = Model.AppointmentId })" class="btn btn-outline-warning btn-custom me-2">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                @if (!Model.IsMedicalRecordCreated)
+                {
+                    <a href="@Url.Action("CreateMedicalRecord", "MedicalRecords", new { appointmentId = Model.AppointmentId })" class="btn btn-outline-success btn-custom">
+                        <i class="fas fa-plus"></i> Add Medical Record
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

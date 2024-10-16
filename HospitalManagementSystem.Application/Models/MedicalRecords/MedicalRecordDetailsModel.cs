@@ -12,6 +12,7 @@ namespace HospitalManagementSystem.Application.Models.MedicalRecords
         public string? Description { get; set; }
         public string? Diagnosis { get; set; }
         public string? Treatment { get; set; }
+        public int MedicalRecordId { get; set; }
 
         public string PatientName { get; set; }
         public string DoctorName { get; set; }

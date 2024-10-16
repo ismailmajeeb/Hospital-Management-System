@@ -11,6 +11,7 @@ namespace HospitalManagementSystem.Application.Models.Patients
 {
     public class PatientAppointmentsModel
     {
+    
         [Required]
         public int AppointmentId { get; set; }
         [Display(Name = "Doctor Name")]

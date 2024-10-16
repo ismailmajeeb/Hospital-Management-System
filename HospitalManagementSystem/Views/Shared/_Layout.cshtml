@@ -21,6 +21,14 @@
         {
             <partial name="_AdminNavBar" />
         }
+        else if (User.IsInRole(SD.Doctor))
+        {
+            <partial name="_DoctorNavBar" />
+        }
+        else if (User.IsInRole(SD.Nurse))
+        {
+            <partial name="_NurseNavBar" />
+        }
         else
         {
             <partial name="_AnonymousNavBar" />

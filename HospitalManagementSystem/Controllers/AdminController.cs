@@ -36,7 +36,8 @@ namespace HospitalManagementSystem.Controllers
             var patients = await unitOfWork.Patients.GetAllAsync();
             var doctors = await unitOfWork.Doctors.GetAllAsync();
             var nurses = await unitOfWork.Nurses.GetAllAsync();
-            var appointments = await unitOfWork.Appointments.FindAllAsync(a => true, includes: ["Doctor", "Patient"]);
+            var appointments = await unitOfWork.Appointments.FindAllAsync(a => a.Status == Status.Confirmed, 
+                                                                          includes: ["Doctor", "Patient"]);
             var viewModel = new AdminDashboardModel
             {
                 PatientsCount = patients.Count(),
@@ -126,6 +127,7 @@ namespace HospitalManagementSystem.Controllers
             };
             return View(model);
         }
+      
         [HttpPost]
         [Authorize(Roles = SD.Admin)]
         [ValidateAntiForgeryToken]

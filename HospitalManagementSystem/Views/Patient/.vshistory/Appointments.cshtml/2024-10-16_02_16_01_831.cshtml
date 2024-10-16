@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PatientAppointmentsModel>
+
+@{
+    ViewData["Title"] = "Appointments List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Appointments List</h2>
+
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome -->
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this Appointment?");
+        }
+    </script>
+}
+
+<style>
+    /* Smaller Add New Appointment Button Styling */
+    .add-new-btn-sm {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        padding: 5px 12px; /* Reduced padding */
+        font-size: 14px; /* Smaller font */
+        border-radius: 5px; /* Slightly smaller border radius */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .add-new-btn-sm i {
+            margin-right: 5px;
+        }
+
+        .add-new-btn-sm:hover {
+            background-color: #e65c00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-new-btn-sm:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.4);
+        }
+</style>

@@ -1,0 +1,138 @@
+﻿
+@model MedicalRecordDetailsModel
+<style>
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .card-header {
+        background-color: #17a2b8;
+        color: #fff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .card-body h5 {
+        font-size: 1.2rem;
+        color: #444;
+        font-weight: bold;
+    }
+    .card-body p {
+        font-size: 1.1rem;
+        color: #666;
+    }
+    .icon-box {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background-color: #f0f2f5;
+        border-radius: 50%;
+        margin-right: 10px;
+        font-size: 1.3rem;
+        color: #17a2b8;
+    }
+    .info-section {
+        padding: 15px;
+        background-color: #f9f9fb;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    .info-section:hover {
+        background-color: #f1f1f3;
+        transform: translateY(-2px);
+    }
+</style>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4><i class="fas fa-file-medical"></i> Medical Record Details</h4>
+            </div>
+            <div class="card-body">
+                <!-- Patient Name and Doctor Name -->
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                Patient Name:
+                            </h5>
+                            <p class="ms-4">@Model.PatientName</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-user-md"></i>
+                                </span>
+                                Doctor Name:
+                            </h5>
+                            <p class="ms-4">@Model.DoctorName</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointment Date & Time -->
+                <div class="info-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>
+                                <span class="icon-box">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                                Appointment Date & Time:
+                            </h5>
+                            <p class="ms-4">@Model.AppointmentDateTime.ToString("f")</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="info-section">
+                    <h5>
+                        <span class="icon-box">
+                            <i class="fas fa-file-alt"></i>
+                        </span>
+                        Description:
+                    </h5>
+                    <p class="ms-4">@Model.Description</p>
+                </div>
+
+                <!-- Diagnosis -->
+                <div class="info-section">
+                    <h5>
+                        <span class="icon-box">
+                            <i class="fas fa-diagnoses"></i>
+                        </span>
+                        Diagnosis:
+                    </h5>
+                    <p class="ms-4">@Model.Diagnosis</p>
+                </div>
+
+                <!-- Treatment -->
+                <div class="info-section">
+                    <h5>
+                        <span class="icon-box">
+                            <i class="fas fa-prescription-bottle-alt"></i>
+                        </span>
+                        Treatment:
+                    </h5>
+                    <p class="ms-4">@Model.Treatment</p>
+                </div>
+            </div>
+
+            <!-- Optional Footer with Buttons -->
+            <div class="card-footer d-flex justify-content-end p-3">
+                <a href="@Url.Action("Edit", "MedicalRecord", new { id = Model.MedicalRecordId })" class="btn btn-outline-warning btn-custom me-2">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>

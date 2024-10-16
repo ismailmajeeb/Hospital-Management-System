@@ -9,7 +9,7 @@ namespace HospitalManagementSystem.Application.Models.MedicalRecords
 {
     public class EditMedicalRecordModel
     {
-        public int Id { get; set; }
+        public int MedicalRecordId { get; set; }
         [Required]
         public string? Discription { get; set; }
         [Required]

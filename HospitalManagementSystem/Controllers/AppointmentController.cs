@@ -18,7 +18,8 @@ namespace HospitalManagementSystem.Controllers
         public async Task<ActionResult> Index()
         {
 
-            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime,a=>a.DateTime, includes: ["Doctor", "Patient"]);
+            var appointments = await _context.Appointments.FindAllAsync(a => DateTime.Now < a.DateTime,
+                                                                        a => a.DateTime, includes: ["Doctor", "Patient"]);
             var model = appointments.Select(a => new AppointmentsIndexModel
             {
 
@@ -38,7 +39,7 @@ namespace HospitalManagementSystem.Controllers
         {
             return View();
         }
-        // POST: AppointmentController/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = SD.Admin)]
@@ -126,5 +127,30 @@ namespace HospitalManagementSystem.Controllers
             return RedirectToAction("Index");
 
         }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = $"{SD.Admin},{SD.Doctor}")]
+        public async Task<IActionResult> Details(int Id)
+        {
+            var appointment = await _context.Appointments.FindAsync(a => a.Id == Id, includes: ["Doctor", "Patient", "MedicalRecord"]);
+            var model = new AppointmentDetailsModel
+            {
+                AppointmentId = Id,
+                DateTime = appointment.DateTime,
+                DoctorName = appointment.Doctor.Name,
+                IsMedicalRecordCreated = appointment.MedicalRecord == null ? false : true,
+                MedicalRecordId = appointment.MedicalRecord?.Id,
+                PatientName = appointment.Patient.Name,
+                Reason = appointment.Reason,
+                Status = appointment.Status,
+            };
+            return View(model);
+
+
+        }
+
     }
 }

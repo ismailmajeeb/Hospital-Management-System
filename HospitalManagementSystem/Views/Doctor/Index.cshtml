@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DoctorsIndexModel>
+﻿@model IEnumerable<DoctorIndexModel>
 
 @{
     ViewData["Title"] = "Doctors List";
@@ -36,8 +36,8 @@
                                 <td>@Doctor.Name</td>
                                 <td class="text-center">
                                     <form asp-controller="Doctor" method="Get">
-                                        <button type="submit" asp-action="ViewMedicalRecords" asp-route-id="@Doctor.UserId" class="btn btn-primary btn-sm">Medical Records</button>
-                                        <button type="submit" asp-action="ViewAppointments" asp-route-id="@Doctor.UserId" class="btn btn-info btn-sm">Appointments</button>
+                                        <button type="submit" asp-action="MedicalRecords" asp-route-id="@Doctor.UserId" class="btn btn-primary btn-sm">Medical Records</button>
+                                        <button type="submit" asp-action="Appointments" asp-route-id="@Doctor.UserId" class="btn btn-info btn-sm">Appointments</button>
                                         <button type="submit" asp-route-id="@Doctor.UserId" asp-action="Edit" class="btn btn-success btn-sm">Edit</button>
                                     </form>
                                 </td>

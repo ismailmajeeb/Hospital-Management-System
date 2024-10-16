@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalManagementSystem.Controllers
 {
-    [Authorize(Roles = SD.Doctor)]
     public class MedicalRecordController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -14,13 +13,12 @@ namespace HospitalManagementSystem.Controllers
         }
 
 
-        [HttpPost]
-        [Authorize(Roles = $"{SD.Doctor},{SD.Patient}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int Id)
+        [HttpGet]
+        [Authorize(Roles = $"{SD.Doctor},{SD.Patient},{SD.Admin}")]
+        public async Task<IActionResult> Details(int Id)
         {
             var record = await unitOfWork.MedicalRecords.FindAsync(m => m.Id == Id, includes: ["Doctor", "Appointment", "Patient"]);
-
+            if (record == null) return View("Error");
             return View(new MedicalRecordDetailsModel
             {
                 AppointmentDateTime = record.Appointment.DateTime,
@@ -29,13 +27,15 @@ namespace HospitalManagementSystem.Controllers
                 DoctorName = record.Doctor.Name,
                 PatientName = record.Patient.Name,
                 Treatment = record.Treatment,
+                MedicalRecordId = record.Id,
 
             });
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        [Authorize(Roles = SD.Doctor)]
+
         public async Task<IActionResult> Create(int Id)
         {
             int appointmentId = Id;
@@ -53,6 +53,8 @@ namespace HospitalManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = SD.Doctor)]
+
         public async Task<IActionResult> Create(CreateMedicalRecordModel model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -72,18 +74,19 @@ namespace HospitalManagementSystem.Controllers
             };
             await unitOfWork.MedicalRecords.AddAsync(record);
             await unitOfWork.CompleteAsync();
-            return RedirectToAction("Doctor", "MedicalRecord");
+            return RedirectToAction("MedicalRecords", "Doctor");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        [Authorize(Roles = SD.Doctor)]
+
         public async Task<IActionResult> Edit(int Id)
         {
             var record = await unitOfWork.MedicalRecords.FindAsync(m => m.Id == Id, includes: ["Doctor", "Patient"]);
             if (record == null) return View("Error");
             return View(new EditMedicalRecordModel
             {
-                Id = Id,
+                MedicalRecordId = Id,
                 AppointmentId = record.AppointmentId,
                 Diagnosis = record.Diagnosis,
                 Discription = record.Discription,
@@ -95,11 +98,12 @@ namespace HospitalManagementSystem.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = SD.Doctor)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditMedicalRecordModel model)
         {
             if (!ModelState.IsValid) return View(model);
-            var record = await unitOfWork.MedicalRecords.GetByIdAsync(model.Id);
+            var record = await unitOfWork.MedicalRecords.GetByIdAsync(model.MedicalRecordId);
             if (record == null) return View("Error");
 
             record.Diagnosis = model.Diagnosis;
@@ -107,7 +111,7 @@ namespace HospitalManagementSystem.Controllers
             record.Treatment = model.Treatment;
             await unitOfWork.CompleteAsync();
 
-            return RedirectToAction("Doctor", "MedicalRecord");
+            return RedirectToAction("MedicalRecords","Doctor",new { Id = User.FindFirstValue(ClaimTypes.NameIdentifier)});
 
         }
     }
