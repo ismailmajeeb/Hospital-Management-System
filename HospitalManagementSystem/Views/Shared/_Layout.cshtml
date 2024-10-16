@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HospitalManagementSystem</title>
+    <title>@ViewData["Title"] - Hospital Management System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -31,7 +31,7 @@
         }
         else
         {
-            <partial name="_AnonymousNavBar" />
+            @* <partial name="_AnonymousNavBar" /> *@
 
         }
     </header>
@@ -41,11 +41,11 @@
               @RenderBody()
         </div>
     </div>
-    <footer class="border-top footer text-muted" style="bottom:-5%">
+    @* <footer class="border-top footer text-muted" style="bottom:-5%">
         <div class="container">
             &copy; 2024 - HospitalManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -58,6 +58,7 @@
     body {
         background-color: #f0f4f7;
         font-family: 'Arial', sans-serif;
+        
     }
 
 </style>
