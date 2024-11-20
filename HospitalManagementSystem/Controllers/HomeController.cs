@@ -15,6 +15,12 @@ namespace HospitalManagementSystem.Controllers
         {
             if (User.IsInRole(SD.Admin))
                 return RedirectToAction("Dashboard", "Admin");
+            else if (User.IsInRole(SD.Patient))
+                return RedirectToAction("Dashboard", "Patient");
+            else if (User.IsInRole(SD.Doctor))
+                return RedirectToAction("DashBoard", "Doctor");
+            else if (User.IsInRole(SD.Nurse))
+                return RedirectToAction("Dashboard", "Nurse");
             return View();
         }
 
